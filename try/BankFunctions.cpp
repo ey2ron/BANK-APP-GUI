@@ -98,22 +98,19 @@ bool BankFunctions::checkUSB() {
 
 void BankFunctions::saveUSB() {
 	user* acc2save2usb = usbhead;
-	string absolutepath = "D:/BankAccountsUSB.txt";
-	ofstream myFile(absolutepath);
-	if (!myFile) {
-		cout << "File Error" << endl;
-		return;
-	}
+	ofstream myFile("D:/BankAccountsIBM-USB.txt");
 	myFile << "AccountName AccountNumber Balance Pin" << endl;
-	myFile << acc2save2usb->data.accname << " " << acc2save2usb->data.accnum << " " << acc2save2usb->data.balance << " " << acc2save2usb->data.accountpin << endl;
+	myFile << acc2save2usb->data.accname << " " 
+		<< acc2save2usb->data.accnum << " " 
+		<< acc2save2usb->data.balance << " " 
+		<< acc2save2usb->data.accountpin << endl;
 	myFile.close();
-	cout << "Data saved to USB successfully!" << endl;
 }
 
 bool BankFunctions::accverify(wxString accountnum) {
-
+	
 	user* x = head;
-	string numpin;
+	wxString numpin;
 	while (x != NULL) {
 		if (x->data.accnum == accountnum) {
 			if (x->data.accountpin == numpin) {
