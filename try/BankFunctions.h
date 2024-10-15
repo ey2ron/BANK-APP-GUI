@@ -27,12 +27,13 @@ public:
 	void savelocal();
 	void retrievelocal();
 	void Adduser(info x);
-	bool IsDigits(const wxString& str);
 	bool usbempty();
 	bool uniqueAccountNumber(wxString accountNumber);
 	wxString randAccNum();
 	user* gethead();
-
+	bool checkUSB();
+	bool accverify(wxString accnum);
+	void saveUSB();
 	
 };
 

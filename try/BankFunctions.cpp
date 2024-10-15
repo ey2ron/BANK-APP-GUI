@@ -8,8 +8,11 @@
 #include <set>
 #include <iomanip>
 #include <windows.h>
+#include <istream>
 
 using namespace std;
+
+
 
 bool BankFunctions::isFlashDriveInserted() {
 	DWORD driveMask = GetLogicalDrives();
@@ -68,6 +71,58 @@ void BankFunctions::retrievelocal(){
 
 	myFile.close();
 	wxLogMessage("Data retrieved successfully.");
+}
+
+bool BankFunctions::checkUSB() {
+	info p;
+	string absolutepath = "D:/BankAccountsIBM-USB.txt";
+	ifstream myFile(absolutepath);
+
+	string header;
+	string name, num, pin;
+
+	getline(myFile, header);
+	while (myFile >> name >> num >> p.balance >> pin){
+		p.accname = wxString(name);
+		p.accnum = wxString(num);
+		p.accountpin = pin;
+		if (accverify(p.accnum)) {
+			usbhead->data = p;
+			myFile.close();
+			return true;
+		}
+	}
+	myFile.close();
+	return false;
+}
+
+void BankFunctions::saveUSB() {
+	user* acc2save2usb = usbhead;
+	string absolutepath = "D:/BankAccountsUSB.txt";
+	ofstream myFile(absolutepath);
+	if (!myFile) {
+		cout << "File Error" << endl;
+		return;
+	}
+	myFile << "AccountName AccountNumber Balance Pin" << endl;
+	myFile << acc2save2usb->data.accname << " " << acc2save2usb->data.accnum << " " << acc2save2usb->data.balance << " " << acc2save2usb->data.accountpin << endl;
+	myFile.close();
+	cout << "Data saved to USB successfully!" << endl;
+}
+
+bool BankFunctions::accverify(wxString accountnum) {
+
+	user* x = head;
+	string numpin;
+	while (x != NULL) {
+		if (x->data.accnum == accountnum) {
+			if (x->data.accountpin == numpin) {
+				return true;
+			}
+		}
+		x = x->next;
+	}
+	return false;
 }
 
 void BankFunctions::Adduser(info x) {
