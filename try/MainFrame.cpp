@@ -20,17 +20,18 @@ using namespace std;
  wxFont ThankyouFont(28, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  
 
-MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
+ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
 
-    if (!bank.isFlashDriveInserted()) {
-        wxLogError("No flash drive detected. Please insert a flash drive to continue.");
-        Close(true);  
-        return;
-    }
-    
-    FirstPanel(); 
-}
-
+     if (!bank.isFlashDriveInserted()) {
+         wxLogError("No flash drive detected. Please insert a flash drive to continue.");
+         Close(true);
+         return;
+     }
+     else {
+         bank.retrievelocal();
+         FirstPanel();
+     }
+ }
 // STARTMENU
 void MainFrame::FirstPanel() {
     panel = new wxPanel(this);
@@ -70,9 +71,16 @@ void MainFrame::FirstPanel() {
 }
     // BANK MENU
 void MainFrame::OnButton1Clicked(wxCommandEvent& evt) {
-    panel->Hide();
-    bankpanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    bankpanel->SetBackgroundColour(*wxWHITE);
+    if (!bank.checkUSB()) {
+        wxLogMessage("NO ACCOUNTs FOUND IN THE USB, YOU MAY PROCEED");
+        panel->Hide();
+        bankpanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
+        bankpanel->SetBackgroundColour(*wxWHITE);
+    }
+    else {
+        wxLogMessage("EXISTING ACCOUNT FOUND");
+        return;
+    }
    
     // Enroll for a Bank Account button
     wxPanel* enrollPanel = new wxPanel(bankpanel, wxID_ANY, wxPoint(378, 318), wxSize(504, 94));
@@ -147,6 +155,7 @@ void MainFrame::onConfirmButtonClicked(wxCommandEvent& evt) {
 		temp.accnum = bank.randAccNum();
 		bank.Adduser(temp);
         bank.savelocal();
+        bank.saveUSB();
 		wxLogMessage("Account Added");
 	}
 	else {
