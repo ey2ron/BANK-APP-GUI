@@ -36,7 +36,7 @@ public:
 	user* locateaddress(wxString num);
 	void saveUSB();
 	void retrieveUSB();
-
+	bool pincheck(wxString pin);
 	void deposit(long double amount);
 	
 };

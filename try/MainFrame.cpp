@@ -16,6 +16,25 @@ using namespace std;
  wxTextCtrl* InputPin;
  wxTextCtrl* Inputname;
  wxButton* ExitEnrollButton; 
+ wxTextCtrl* pinenter;
+ wxButton* pinverify;
+
+ //================================================= TRANSACTION PANELS ======================================//
+ wxPanel* depositPanel;
+ /**/wxTextCtrl* depositamount;
+ /**/wxButton* depositbutton;
+
+ wxPanel* balancePanel;
+
+ wxPanel* withdrawPanel;
+
+ wxPanel* transferPanel;
+
+ wxPanel* pinPanel;
+
+ wxPanel* exitPanel;
+
+
  
  wxFont buttonFont(14, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  wxFont ThankyouFont(28, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
@@ -112,15 +131,7 @@ void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
         InputPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 418), wxSize(504, 94));
         InputPin->SetFont(buttonFont);
         InputPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
-        regex numberRegex("^[0-9]*$");
-        wxString pinValue = InputPin->GetValue();
-
-        if (!std::regex_match(pinValue.ToStdString(), numberRegex)) {
-            wxString numericOnly;
-            for (const auto& c : pinValue) if (wxIsdigit(c)) numericOnly += c;
-            InputPin->ChangeValue(numericOnly);
-        }
-
+        InputPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
         ConfirmButton = new wxButton(EnrollPanel, wxID_ANY, "Confirm Account", wxPoint(378, 518), wxSize(504, 94));
         ConfirmButton->SetFont(buttonFont);
@@ -182,11 +193,32 @@ void MainFrame::OnReturnButtonClicked(wxCommandEvent& evt) {
 //ATM MENU
 void MainFrame::OnButton2Clicked(wxCommandEvent& evt) {
     panel->Hide();
-    //enterpinPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    //wxTextCtrl* pinenter = new wxTextCtrl(enterpinPanel, wxID_ANY,"", wxPoint(378, 18), wxSize(504, 94));
+    enterpinPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
+    pinenter = new wxTextCtrl(enterpinPanel, wxID_ANY,"ENTER PIN HERE", wxPoint(378, 18), wxSize(504, 94));
+    pinenter->SetFont(buttonFont);
+    pinenter->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+    pinenter->Bind(wxEVT_TEXT, &MainFrame::PinEnterChanged, this);
 
-    ATMPANEL();
+    pinverify = new wxButton(enterpinPanel, wxID_ANY, "Confirm Pin", wxPoint(378, 100), wxSize(400, 94));
+    pinverify->SetFont(buttonFont);
+    pinverify->Bind(wxEVT_BUTTON, &MainFrame::pinverifybutton, this);
+   
+}
 
+void MainFrame::PinEnterChanged(wxCommandEvent& evt) {
+
+}
+
+void MainFrame::pinverifybutton(wxCommandEvent& evt) {
+    wxString pin = pinenter->GetValue();
+    if (bank.pincheck(pin)) {
+        enterpinPanel->Hide();
+        ATMPANEL();
+    }
+    else {
+        wxLogMessage("WRONG PIN");
+        return;
+    }
 }
 
 void MainFrame::ATMPANEL() {
@@ -195,42 +227,42 @@ void MainFrame::ATMPANEL() {
     atmPanel->SetBackgroundColour(*wxWHITE);
 
     // Display Balance Button
-    wxPanel* balancePanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 18), wxSize(504, 94));
+    balancePanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 18), wxSize(504, 94));
     balancePanel->SetBackgroundColour(*wxBLACK);
     wxButton* balanceButton = new wxButton(balancePanel, wxID_ANY, "Display Balance", wxPoint(2, 2), wxSize(500, 90));
     balanceButton->SetFont(buttonFont);
     balanceButton->Bind(wxEVT_BUTTON, &MainFrame::OnDisplayBalanceClicked, this);
 
+
     // Withdraw Button
-    wxPanel* withdrawPanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 118), wxSize(504, 94));
+    withdrawPanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 118), wxSize(504, 94));
     withdrawPanel->SetBackgroundColour(*wxBLACK);
     wxButton* withdrawButton = new wxButton(withdrawPanel, wxID_ANY, "Withdraw", wxPoint(2, 2), wxSize(500, 90));
     withdrawButton->SetFont(buttonFont);
     withdrawButton->Bind(wxEVT_BUTTON, &MainFrame::OnWithdrawClicked, this);
 
     // Deposit Button
-    wxPanel* depositPanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 218), wxSize(504, 94));
-    depositPanel->SetBackgroundColour(*wxBLACK);
-    wxButton* depositButton = new wxButton(depositPanel, wxID_ANY, "Deposit", wxPoint(2, 2), wxSize(500, 90));
+
+    wxButton* depositButton = new wxButton(atmPanel, wxID_ANY, "Deposit", wxPoint(378, 218), wxSize(500, 90));
     depositButton->SetFont(buttonFont);
     depositButton->Bind(wxEVT_BUTTON, &MainFrame::OnDepositClicked, this);
 
     // Fund Transfer Button
-    wxPanel* transferPanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 318), wxSize(504, 94));
+    transferPanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 318), wxSize(504, 94));
     transferPanel->SetBackgroundColour(*wxBLACK);
     wxButton* transferButton = new wxButton(transferPanel, wxID_ANY, "Fund Transfer", wxPoint(2, 2), wxSize(500, 90));
     transferButton->SetFont(buttonFont);
     transferButton->Bind(wxEVT_BUTTON, &MainFrame::OnTransferClicked, this);
 
     // Change PIN Button
-    wxPanel* pinPanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 418), wxSize(504, 94));
+    pinPanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 418), wxSize(504, 94));
     pinPanel->SetBackgroundColour(*wxBLACK);
     wxButton* pinButton = new wxButton(pinPanel, wxID_ANY, "Change PIN", wxPoint(2, 2), wxSize(500, 90));
     pinButton->SetFont(buttonFont);
     pinButton->Bind(wxEVT_BUTTON, &MainFrame::OnChangePinClicked, this);
 
     // Exit and Save Button
-    wxPanel* exitPanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 518), wxSize(504, 94));
+    exitPanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 518), wxSize(504, 94));
     exitPanel->SetBackgroundColour(*wxBLACK);
     wxButton* exitButton = new wxButton(exitPanel, wxID_ANY, "Exit and Save", wxPoint(2, 2), wxSize(500, 90));
     exitButton->SetFont(buttonFont);
@@ -247,8 +279,36 @@ void MainFrame::OnWithdrawClicked(wxCommandEvent& evt) {
    
 }
 
+
+
 void MainFrame::OnDepositClicked(wxCommandEvent& evt) {
+    depositPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
+    depositPanel->SetBackgroundColour(*wxLIGHT_GREY);
+    atmPanel->Hide();
+    depositPanel->Show();
+
   
+    depositamount = new wxTextCtrl(depositPanel, wxID_ANY, "INPUT AMOUNT TO DEPOSIT", wxPoint(378, 518), wxSize(500, 90));
+    depositamount->SetFont(buttonFont);
+    depositamount->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+
+    depositbutton = new wxButton(depositPanel, wxID_ANY, "DEPOSIT", wxPoint(378, 418), wxSize(500, 90));
+    depositbutton->SetFont(buttonFont);
+    depositbutton->Bind(wxEVT_BUTTON, &MainFrame::ondepositamount,this);
+}
+
+void MainFrame::ondepositamount(wxCommandEvent& evt) {
+    wxString depo = depositamount->GetValue();
+    double depostr;
+    if (!depo.ToCDouble(&depostr)) {
+        wxMessageBox("Please enter a valid numeric amount.", "Input Error", wxOK | wxICON_ERROR);
+        return;
+    }
+    bank.deposit(depostr);
+    wxMessageBox("DEPOSIT SUCCESS");
+    bank.savelocal();
+    depositPanel->Hide();
+    atmPanel->Show();
 }
 
 void MainFrame::OnTransferClicked(wxCommandEvent& evt) {

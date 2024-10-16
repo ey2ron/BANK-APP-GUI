@@ -218,7 +218,17 @@ bool BankFunctions::uniqueAccountNumber(wxString accountNumber) {
 //TRNSACTIONS-----------------------------------------------------------------------------------------------------
 //=================================================================================================================
 
+bool BankFunctions::pincheck(wxString pin) {
+	user* check = usbhead;
+	if(check->data.accountpin==pin){
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 void BankFunctions::deposit(long double amount) {
 	user* current = usbhead;
-	current->data.balance += amount;
+		current->data.balance += amount;
 }

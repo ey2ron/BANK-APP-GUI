@@ -30,5 +30,8 @@ private:
 	void OnChangePinClicked(wxCommandEvent& evt);
 	void OnExitATMClicked(wxCommandEvent& evt);
 	void OnOkayButtonClicked(wxCommandEvent& evt);
+	void PinEnterChanged(wxCommandEvent& evt);
+	void pinverifybutton(wxCommandEvent& evt);
+	void ondepositamount(wxCommandEvent& evt);
 	
 };
