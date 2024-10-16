@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <windows.h>
 #include <istream>
+#include <iostream>
 
 using namespace std;
 
@@ -73,54 +74,94 @@ void BankFunctions::retrievelocal(){
 	wxLogMessage("Data retrieved successfully.");
 }
 
-bool BankFunctions::checkUSB() {
-	info p;
-	string absolutepath = "D:/BankAccountsIBM-USB.txt";
-	ifstream myFile(absolutepath);
+void BankFunctions::retrieveUSB() {
+	string filePath = "D:/BankAccountsIBM-USB.txt";
+
+	ifstream myFile(filePath);
+	if (!myFile) {
+		usbhead = nullptr;
+		wxLogError("FILE DOES NOT EXIST, USB File Error: Could not open %s", filePath);
+		return;
+	}
 
 	string header;
-	string name, num, pin;
-
+	string heder;
+	header = wxString(heder);
+	string num;
+	wxString temp;
 	getline(myFile, header);
-	while (myFile >> name >> num >> p.balance >> pin){
-		p.accname = wxString(name);
-		p.accnum = wxString(num);
-		p.accountpin = pin;
-		if (accverify(p.accnum)) {
-			usbhead->data = p;
-			myFile.close();
+	(myFile >> num);
+	temp = wxString(num);
+	myFile.close();
+	if (doesaccexists(num)) {
+		usbhead = locateaddress(num);
+		wxLogMessage("Data retrieved from USB successfully and synced with usbhead.");
+	}
+	
+}
+
+bool BankFunctions::doesaccexists(wxString accnum) {
+	user* traverse = head;
+	while (traverse != nullptr) {
+		if (traverse->data.accnum == accnum) {
+			wxLogMessage("Account Exists!");
 			return true;
 		}
+		traverse = traverse->next;
 	}
-	myFile.close();
 	return false;
 }
+
+user* BankFunctions::locateaddress(wxString num) {
+	user* temp = head;
+	while (temp != nullptr) {
+		if (temp->data.accnum == num) {
+			return temp;
+		}
+		temp = temp->next;
+	}
+}
+
+
+
 
 void BankFunctions::saveUSB() {
-	user* acc2save2usb = usbhead;
-	ofstream myFile("D:/BankAccountsIBM-USB.txt");
-	myFile << "AccountName AccountNumber Balance Pin" << endl;
-	myFile << acc2save2usb->data.accname << " " 
-		<< acc2save2usb->data.accnum << " " 
-		<< acc2save2usb->data.balance << " " 
-		<< acc2save2usb->data.accountpin << endl;
+	string filePath = "D:/BankAccountsIBM-USB.txt";
+
+
+	ofstream myFile(filePath);
+	if (!myFile) {
+		wxLogError("USB File Error: Could not find");
+		return;
+	}
+	if (usbhead != nullptr) {
+		myFile << "AccountNumber" << endl;
+		myFile << usbhead->data.accnum << endl;
+	}
+	else {
+		wxLogWarning("No account in usbhead to save.");
+	}
+
 	myFile.close();
+	wxLogMessage("Account number saved to USB successfully ");
 }
 
-bool BankFunctions::accverify(wxString accountnum) {
-	
-	user* x = head;
-	wxString numpin;
-	while (x != NULL) {
-		if (x->data.accnum == accountnum) {
-			if (x->data.accountpin == numpin) {
-				return true;
-			}
-		}
-		x = x->next;
+void BankFunctions::newacc(info x) {
+	user* newnode = new user(x);
+	if (isempty()) {
+		head = newnode;
 	}
-	return false;
+	else {
+		user* temp = head;
+		while (temp->next!= nullptr) {
+			temp = temp->next;
+		}
+		temp->next = newnode;
+	}
+	usbhead = newnode;
+	saveUSB();
 }
+
 
 void BankFunctions::Adduser(info x) {
 	user* newnode = new user(x);
@@ -134,7 +175,9 @@ void BankFunctions::Adduser(info x) {
 			p = p->next;
 		}
 		p->next = newnode;
+		
 	}
+	
 }
 
 bool BankFunctions::isempty() {
@@ -172,4 +215,10 @@ bool BankFunctions::uniqueAccountNumber(wxString accountNumber) {
 	return true;
 }
 
+//TRNSACTIONS-----------------------------------------------------------------------------------------------------
+//=================================================================================================================
 
+void BankFunctions::deposit(long double amount) {
+	user* current = usbhead;
+	current->data.balance += amount;
+}

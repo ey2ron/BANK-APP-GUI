@@ -26,14 +26,18 @@ public:
 	bool isFlashDriveInserted();
 	void savelocal();
 	void retrievelocal();
+	void newacc(info x);
 	void Adduser(info x);
 	bool usbempty();
 	bool uniqueAccountNumber(wxString accountNumber);
 	wxString randAccNum();
 	user* gethead();
-	bool checkUSB();
-	bool accverify(wxString accnum);
+	bool doesaccexists(wxString num);
+	user* locateaddress(wxString num);
 	void saveUSB();
+	void retrieveUSB();
+
+	void deposit(long double amount);
 	
 };
 

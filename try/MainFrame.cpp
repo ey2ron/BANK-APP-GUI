@@ -1,6 +1,7 @@
 #include "MainFrame.h"
 #include <wx/wx.h>
 #include <Windows.h>
+#include <regex>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ using namespace std;
  
 
  MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
-
+     
      if (!bank.isFlashDriveInserted()) {
          wxLogError("No flash drive detected. Please insert a flash drive to continue.");
          Close(true);
@@ -29,6 +30,7 @@ using namespace std;
      }
      else {
          bank.retrievelocal();
+         bank.retrieveUSB();
          FirstPanel();
      }
  }
@@ -71,56 +73,66 @@ void MainFrame::FirstPanel() {
 }
     // BANK MENU
 void MainFrame::OnButton1Clicked(wxCommandEvent& evt) {
-    if (!bank.checkUSB()) {
-        wxLogMessage("NO ACCOUNTs FOUND IN THE USB, YOU MAY PROCEED");
-        panel->Hide();
+  
+    panel->Hide();
         bankpanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-        bankpanel->SetBackgroundColour(*wxWHITE);
-    }
-    else {
-        wxLogMessage("EXISTING ACCOUNT FOUND");
-        return;
-    }
-   
-    // Enroll for a Bank Account button
-    wxPanel* enrollPanel = new wxPanel(bankpanel, wxID_ANY, wxPoint(378, 318), wxSize(504, 94));
-    enrollPanel->SetBackgroundColour(*wxBLACK); 
-    wxButton* enrollButton = new wxButton(enrollPanel, wxID_ANY, "Enroll for a Bank Account", wxPoint(2, 2), wxSize(500, 90));
-    enrollButton->SetFont(buttonFont);
-    enrollButton->Bind(wxEVT_BUTTON, &MainFrame::OnEnrollButtonClicked, this);
+        bankpanel->SetBackgroundColour(*wxWHITE);   
+        
 
-    // Return to Main Menu button
-    wxPanel* returnPanel = new wxPanel(bankpanel, wxID_ANY, wxPoint(378, 518), wxSize(504, 94));
-    returnPanel->SetBackgroundColour(*wxBLACK);
-    wxButton* returnButton = new wxButton(returnPanel, wxID_ANY, "3. Return back to the main menu", wxPoint(2, 2), wxSize(500, 90));
-    returnButton->SetFont(buttonFont);
-    returnButton->Bind(wxEVT_BUTTON, &MainFrame::OnReturnButtonClicked, this); 
+        // Enroll for a Bank Account button
+        wxPanel* enrollPanel = new wxPanel(bankpanel, wxID_ANY, wxPoint(378, 318), wxSize(504, 94));
+        enrollPanel->SetBackgroundColour(*wxBLACK);
+        wxButton* enrollButton = new wxButton(enrollPanel, wxID_ANY, "Enroll for a Bank Account", wxPoint(2, 2), wxSize(500, 90));
+        enrollButton->SetFont(buttonFont);
+        enrollButton->Bind(wxEVT_BUTTON, &MainFrame::OnEnrollButtonClicked, this);
+       
+
+        // Return to Main Menu button
+        wxPanel* returnPanel = new wxPanel(bankpanel, wxID_ANY, wxPoint(378, 518), wxSize(504, 94));
+        returnPanel->SetBackgroundColour(*wxBLACK);
+        wxButton* returnButton = new wxButton(returnPanel, wxID_ANY, "3. Return back to the main menu", wxPoint(2, 2), wxSize(500, 90));
+        returnButton->SetFont(buttonFont);
+        returnButton->Bind(wxEVT_BUTTON, &MainFrame::OnReturnButtonClicked, this);
+    
 }
 //ENROLL PANEL
 
 void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
-    bankpanel->Hide();
-    EnrollPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    EnrollPanel->SetBackgroundColour(*wxWHITE);
-    EnrollPanel->Show();
+    if (bank.usbempty()) {
+        bankpanel->Hide();
+        EnrollPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
+        EnrollPanel->SetBackgroundColour(*wxWHITE);
+        EnrollPanel->Show();
 
-	Inputname = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 318), wxSize(504, 94));
-	Inputname->SetFont(buttonFont);
-    Inputname->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
-	
-
-	InputPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 418), wxSize(504, 94));
-	InputPin->SetFont(buttonFont);
-    InputPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
+        Inputname = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 318), wxSize(504, 94));
+        Inputname->SetFont(buttonFont);
+        Inputname->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
 
 
-	ConfirmButton = new wxButton(EnrollPanel, wxID_ANY, "Confirm Account", wxPoint(378, 518), wxSize(504, 94));
-	ConfirmButton->SetFont(buttonFont);
-    ConfirmButton->Bind(wxEVT_BUTTON, &MainFrame::onConfirmButtonClicked, this);ConfirmButton->Disable();
-    
-    ExitEnrollButton = new wxButton(EnrollPanel, wxID_ANY, "return to menu", wxPoint(378, 618),wxSize(504, 94));
-    ExitEnrollButton->SetFont(buttonFont);
-    ExitEnrollButton->Bind(wxEVT_BUTTON, &MainFrame::ExitEnroll, this);
+        InputPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 418), wxSize(504, 94));
+        InputPin->SetFont(buttonFont);
+        InputPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
+        regex numberRegex("^[0-9]*$");
+        wxString pinValue = InputPin->GetValue();
+
+        if (!std::regex_match(pinValue.ToStdString(), numberRegex)) {
+            wxString numericOnly;
+            for (const auto& c : pinValue) if (wxIsdigit(c)) numericOnly += c;
+            InputPin->ChangeValue(numericOnly);
+        }
+
+
+        ConfirmButton = new wxButton(EnrollPanel, wxID_ANY, "Confirm Account", wxPoint(378, 518), wxSize(504, 94));
+        ConfirmButton->SetFont(buttonFont);
+        ConfirmButton->Bind(wxEVT_BUTTON, &MainFrame::onConfirmButtonClicked, this); ConfirmButton->Disable();
+
+        ExitEnrollButton = new wxButton(EnrollPanel, wxID_ANY, "return to menu", wxPoint(378, 618), wxSize(504, 94));
+        ExitEnrollButton->SetFont(buttonFont);
+        ExitEnrollButton->Bind(wxEVT_BUTTON, &MainFrame::ExitEnroll, this);
+    }else{
+        wxLogMessage("EXISTING ACCOUNT IN FLASHDRIVE FOUND, CANNOT ENROLL FOR NEW");
+        return;
+    }
   
 }
 
@@ -148,21 +160,17 @@ void MainFrame::OnInputChanged(wxCommandEvent& evt){
 //CONFIRMATION BUTTON
 void MainFrame::onConfirmButtonClicked(wxCommandEvent& evt) {
 	info temp;
-	if (bank.usbempty()) {
+	
 		wxString sname = temp.accname = Inputname->GetValue();
-		wxString spin = temp.accountpin = InputPin->GetValue(); // Get the PIN from the input field
+		wxString spin = temp.accountpin = InputPin->GetValue();
 		temp.balance = 5000;
 		temp.accnum = bank.randAccNum();
-		bank.Adduser(temp);
+		bank.newacc(temp);
         bank.savelocal();
-        bank.saveUSB();
-		wxLogMessage("Account Added");
-	}
-	else {
-		wxLogMessage("Existing account found in the usb, redirecting");
-		return;
-	}
-
+        wxLogMessage("Account Added");
+        EnrollPanel->Hide();
+        bankpanel->Show();
+	
 }
 
 
@@ -182,7 +190,7 @@ void MainFrame::OnButton2Clicked(wxCommandEvent& evt) {
 }
 
 void MainFrame::ATMPANEL() {
-    enterpinPanel->Hide();
+    //enterpinPanel->Hide();
     atmPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
     atmPanel->SetBackgroundColour(*wxWHITE);
 
