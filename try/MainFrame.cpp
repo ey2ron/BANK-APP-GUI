@@ -137,33 +137,7 @@ void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
         ConfirmButton->SetFont(buttonFont);
         ConfirmButton->Bind(wxEVT_BUTTON, &MainFrame::onConfirmButtonClicked, this); ConfirmButton->Disable();
 
-        ExitEnrollButton = new wxButton(EnrollPanel, wxID_ANY, "return to menu", wxPoint(378, 618), wxSize(504, 94));
-        ExitEnrollButton->SetFont(buttonFont);
-        ExitEnrollButton->Bind(wxEVT_BUTTON, &MainFrame::ExitEnroll, this);
-    }else{
-        wxLogMessage("EXISTING ACCOUNT IN FLASHDRIVE FOUND, CANNOT ENROLL FOR NEW");
-        return;
-    }
-  
-}
-
-//EXIT ENROLL
-void MainFrame::ExitEnroll(wxCommandEvent& evt){
-  EnrollPanel->Hide();
-  panel->Show();
-}
-
-
-//INPUT PARAMETERS
-void MainFrame::OnInputChanged(wxCommandEvent& evt){
-	if (Inputname && InputPin) {
-		wxString sname = Inputname->GetValue();
-		wxString pin = InputPin->GetValue();
-		if (!sname.IsEmpty() && (pin.length() == 4 || pin.length() == 6)) {
-			ConfirmButton->Enable();
-		}
-		else {
-			ConfirmButton->Disable();
+        ExitEnrollButton = new wxButton(EnrollPanel, wxID_ANY, "return to menu", wxPoint(378, 618), wxSize(504, 94));9
 		}
 	}
 }
