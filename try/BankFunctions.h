@@ -38,6 +38,10 @@ public:
 	void retrieveUSB();
 	bool pincheck(wxString pin);
 	void deposit(long double amount);
-	
+	bool withdraw(long double amount);
+	double returnbalance();
+	wxString returnaccnum();
+	bool Transfer(wxString userid, double long amount);
+	bool changepin(wxString currentpin, wxString newpin, wxString confirmpin);
 };
 

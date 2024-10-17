@@ -13,8 +13,167 @@
 
 using namespace std;
 
+// NEW ACC
+void BankFunctions::newacc(info x) {
+	user* newnode = new user(x);
+	if (isempty()) {
+		head = newnode;
+	}
+	else {
+		user* temp = head;
+		while (temp->next!= nullptr) {
+			temp = temp->next;
+		}
+		temp->next = newnode;
+	}
+	usbhead = newnode;
+	saveUSB();
+}
+
+// ADD ADD
+void BankFunctions::Adduser(info x) {
+	user* newnode = new user(x);
+	if (isempty()) {
+		head = newnode;
+	}
+
+	else {
+		user* p = head;
+		while (p->next != nullptr) {
+			p = p->next;
+		}
+		p->next = newnode;
+		
+	}
+	
+}
+//=======================================================CHECKERS=========================================//
+bool BankFunctions::isempty() {
+	return (head == nullptr);
+}
+
+bool BankFunctions::usbempty() {
+	return(usbhead == nullptr);
+}
+
+user* BankFunctions::gethead() {
+	user* x = head;
+	return x;
+}
+
+wxString BankFunctions::randAccNum() {
+	static mt19937 gen(chrono::system_clock::now().time_since_epoch().count());
+	uniform_int_distribution<> distr(0, 999999999);
+
+	int number = distr(gen);
+	ostringstream intToNum;
+	intToNum << setw(9) << setfill('0') << number;
+
+	return intToNum.str();
+}
+
+bool BankFunctions::uniqueAccountNumber(wxString accountNumber) {
+	user* currentNode = gethead();
+	while (currentNode != nullptr) {
+		if (currentNode->data.accnum == accountNumber) {
+			return false;
+		}
+		currentNode = currentNode->next;
+	}
+	return true;
+}
 
 
+//===================================================TRANSACTIONS==============================================================//
+
+bool BankFunctions::pincheck(wxString pin) {
+	user* check = usbhead;
+	if(check->data.accountpin==pin){
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+void BankFunctions::deposit(long double amount) {
+	user* current = usbhead;
+		current->data.balance += amount;
+}
+
+double BankFunctions::returnbalance() {
+	user* current = usbhead;
+	return current->data.balance;
+}
+
+wxString BankFunctions::returnaccnum() {
+	user* current = usbhead;
+	return current->data.accnum;
+}
+
+bool BankFunctions::withdraw(long double amount) {
+	user* current = usbhead;
+	if (current->data.balance < amount) {
+		return false;
+	}
+	else {
+
+		current->data.balance -= amount;
+		return true;
+	}
+}
+
+bool BankFunctions::Transfer(wxString userid, double long amount) {
+	user* sender = usbhead;
+	user* recipient = locateaddress(userid);
+
+	if (sender == recipient) {
+		wxMessageBox(" NOW YOU LOOK STUPID FOR DOING THAT ( YOU TRIED SENDING MONEY TO YOURSELF)");
+		return false;
+	}
+	if (recipient == nullptr) {
+		wxMessageBox("RECIPIENT NOT FOUND");
+		return false;
+	}
+	
+	if (sender->data.balance < amount) {
+		wxMessageBox("INSUFFICIENT BALANCE IN YOUR ACCOUNT");
+		return false;
+	}
+
+	else {
+		sender->data.balance -= amount;
+		recipient->data.balance += amount;
+		wxMessageBox("FUNDS SUCCESSFULLY TRANSFERED");
+		return true;
+	}
+}
+
+bool BankFunctions::changepin(wxString currentpin, wxString newpin, wxString confirmpin) {
+	user* current = usbhead;
+	if (usbhead->data.accountpin == newpin) {
+		wxMessageBox("CANNOT USE THE CURRENT PIN");
+		return false;
+	}
+	if ((currentpin.length() != 4 || 6) || (newpin.length() != 4 || 6) ) {
+		if (newpin != confirmpin) {
+			wxLogMessage("new pin and confirm pin does not match");
+			return false;
+		}
+		else {
+			wxLogMessage("pin must be 4 or 6 digits");
+			return false;
+		}
+	}
+	else {
+		usbhead->data.accountpin = confirmpin;
+		return true;
+	}
+}
+
+
+
+//==============================================FILE HANDLING=============================================//
 bool BankFunctions::isFlashDriveInserted() {
 	DWORD driveMask = GetLogicalDrives();
 	for (char driveLetter = 'A'; driveLetter <= 'Z'; ++driveLetter) {
@@ -30,7 +189,7 @@ bool BankFunctions::isFlashDriveInserted() {
 	return false;
 }
 
-void BankFunctions::savelocal(){
+void BankFunctions::savelocal() {
 	ofstream myFile("BankAccountsIBM.txt");
 	if (!myFile) {
 		wxLogError("File Not Found");
@@ -52,7 +211,7 @@ void BankFunctions::savelocal(){
 	wxLogMessage("Data saved successfully.");
 }
 
-void BankFunctions::retrievelocal(){
+void BankFunctions::retrievelocal() {
 	info p;
 	ifstream myFile("BankAccountsIBM.txt");
 	if (!myFile) {
@@ -97,7 +256,7 @@ void BankFunctions::retrieveUSB() {
 		usbhead = locateaddress(num);
 		wxLogMessage("Data retrieved from USB successfully and synced with usbhead.");
 	}
-	
+
 }
 
 bool BankFunctions::doesaccexists(wxString accnum) {
@@ -120,6 +279,7 @@ user* BankFunctions::locateaddress(wxString num) {
 		}
 		temp = temp->next;
 	}
+	return nullptr;
 }
 
 
@@ -144,91 +304,4 @@ void BankFunctions::saveUSB() {
 
 	myFile.close();
 	wxLogMessage("Account number saved to USB successfully ");
-}
-
-void BankFunctions::newacc(info x) {
-	user* newnode = new user(x);
-	if (isempty()) {
-		head = newnode;
-	}
-	else {
-		user* temp = head;
-		while (temp->next!= nullptr) {
-			temp = temp->next;
-		}
-		temp->next = newnode;
-	}
-	usbhead = newnode;
-	saveUSB();
-}
-
-
-void BankFunctions::Adduser(info x) {
-	user* newnode = new user(x);
-	if (isempty()) {
-		head = newnode;
-	}
-
-	else {
-		user* p = head;
-		while (p->next != nullptr) {
-			p = p->next;
-		}
-		p->next = newnode;
-		
-	}
-	
-}
-
-bool BankFunctions::isempty() {
-	return (head == nullptr);
-}
-
-bool BankFunctions::usbempty() {
-	return(usbhead == nullptr);
-}
-
-user* BankFunctions::gethead() {
-	user* x = head;
-	return x;
-}
-
-wxString BankFunctions::randAccNum() {
-	static mt19937 gen(chrono::system_clock::now().time_since_epoch().count());
-	uniform_int_distribution<> distr(0, 999999999);
-
-	int number = distr(gen);
-	ostringstream intToNum;
-	intToNum << setw(9) << setfill('0') << number;
-
-	return intToNum.str();
-}
-
-bool BankFunctions::uniqueAccountNumber(wxString accountNumber) {
-	user* currentNode = gethead();
-	while (currentNode != nullptr) {
-		if (currentNode->data.accnum == accountNumber) {
-			return false;
-		}
-		currentNode = currentNode->next;
-	}
-	return true;
-}
-
-//TRNSACTIONS-----------------------------------------------------------------------------------------------------
-//=================================================================================================================
-
-bool BankFunctions::pincheck(wxString pin) {
-	user* check = usbhead;
-	if(check->data.accountpin==pin){
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-
-void BankFunctions::deposit(long double amount) {
-	user* current = usbhead;
-		current->data.balance += amount;
 }

@@ -30,8 +30,13 @@ private:
 	void OnChangePinClicked(wxCommandEvent& evt);
 	void OnExitATMClicked(wxCommandEvent& evt);
 	void OnOkayButtonClicked(wxCommandEvent& evt);
-	void PinEnterChanged(wxCommandEvent& evt);
 	void pinverifybutton(wxCommandEvent& evt);
-	void ondepositamount(wxCommandEvent& evt);
-	
+	void ondepositamount(wxCommandEvent& evt); 
+	void onexitdisplay(wxCommandEvent& evt);
+	void onwithdrawbuttonclicked(wxCommandEvent& evt);
+	void onexitwithdraw(wxCommandEvent& evt);
+	void onconfirmtransfer(wxCommandEvent& evt);
+	void onexittransfer(wxCommandEvent& evt);
+	void ConfirmPin(wxCommandEvent& evt);
+	void exitchangepin(wxCommandEvent& evt);
 };
