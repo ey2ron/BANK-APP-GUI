@@ -9,7 +9,7 @@ struct info{
 	long double balance;
 	wxString accountpin;
 };
-
+//hello
 struct user {
 	info data;
 	user* next;
