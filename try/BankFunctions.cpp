@@ -10,6 +10,7 @@
 #include <windows.h>
 #include <istream>
 #include <iostream>
+#include <wx/calctrl.h>
 
 using namespace std;
 
@@ -202,13 +203,14 @@ void BankFunctions::savelocal() {
 	}
 
 
-	myFile << "AccountName AccountNumber Balance Pin" << endl;
+	myFile << "AccountName AccountNumber Balance Pin Bday" << endl;
 	user* p = head;
 	while (p != nullptr) {
 		myFile << p->data.accname << " "
 			<< p->data.accnum << " "
 			<< p->data.balance << " "
-			<< p->data.accountpin << endl;
+			<< p->data.accountpin << " "
+			<< p->data.bday <<endl;
 		p = p->next;
 	}
 
@@ -226,11 +228,12 @@ void BankFunctions::retrievelocal() {
 
 	string header;
 	getline(myFile, header);
-	string name, num, pin;
-	while (myFile >> name >> num >> p.balance >> pin) {
+	string name, num, pin, bday;
+	while (myFile >> name >> num >> p.balance >> pin >> bday) {
 		p.accname = wxString(name);
 		p.accnum = wxString(num);
 		p.accountpin = pin;
+		p.bday = wxString(bday);
 		Adduser(p);
 	}
 
@@ -309,4 +312,26 @@ void BankFunctions::saveUSB() {
 
 	myFile.close();
 	wxLogMessage("Account number saved to USB successfully ");
+}
+
+bool BankFunctions::recoverpin(wxString accnum, wxString bdayinput,wxString newpin) {
+	user* temp = usbhead;
+	if (temp->data.accnum != accnum) {
+		wxMessageBox("Incorrect Account Number");
+		return false;
+	}
+
+	if (temp == nullptr) {
+		wxMessageBox("account not found");
+		return false;
+	}
+	if (temp->data.bday == bdayinput) {
+		temp->data.accountpin = newpin;
+		wxMessageBox("CHANGED PIN");
+			return true;
+	}
+	else {
+		wxMessageBox("BDAY OR ACCOUNT NUM NOT MATCHED, PLEASE INPUT CORRECT BDAY");
+		return false;
+	}
 }

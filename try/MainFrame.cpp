@@ -2,8 +2,12 @@
 #include <wx/wx.h>
 #include <Windows.h>
 #include <regex>
+#include <wx/calctrl.h>
+#include <wx/textfile.h>
 
 using namespace std;
+
+wxString bdaydate;
 
  wxPanel* panel;
  wxPanel* bankpanel;
@@ -15,10 +19,12 @@ using namespace std;
  wxButton* ConfirmButton;
  wxTextCtrl* InputPin;
  wxTextCtrl* Inputname;
+ wxButton* Forgotpin;
  wxButton* ExitEnrollButton; 
  wxTextCtrl* pinenter;
  wxButton* pinverify;
-
+ wxCalendarCtrl* calendar;
+ wxPanel* IBbuttonPanel;
  //================================================= TRANSACTION PANELS =============================================//
  wxPanel* depositPanel;
  /**/wxTextCtrl* depositamount;
@@ -49,6 +55,14 @@ using namespace std;
  /**/wxButton* ConfirmPinbutton;
  /**/wxButton* ExitChangePin;
 
+ wxPanel* Recoverpanel;
+ /**/wxTextCtrl* recoveraccnum;
+ /**/wxTextCtrl* recoverbdayyear;
+ /**/wxTextCtrl* recoverbdaymonth;
+ /**/wxTextCtrl* recoverbdayday;
+ /**/wxTextCtrl* createnewpin;
+ /**/wxButton* recoverpin;
+ /**/wxButton* exitrecover;
 
  wxPanel* exitPanel;
 
@@ -77,7 +91,7 @@ void MainFrame::FirstPanel() {
     panel->SetBackgroundColour(*wxLIGHT_GREY);
 
     // Interact with the Bank button
-    wxPanel* IBbuttonPanel = new wxPanel(panel, wxID_ANY, wxPoint(378, 318), wxSize(504, 94));
+    IBbuttonPanel = new wxPanel(panel, wxID_ANY, wxPoint(378, 318), wxSize(504, 94));
     IBbuttonPanel->SetBackgroundColour(*wxBLACK);
     wxButton* IBbutton = new wxButton(IBbuttonPanel, wxID_ANY, "Interact with the Bank", wxPoint(2, 2), wxSize(500, 90));
     IBbutton->SetFont(buttonFont);
@@ -117,17 +131,19 @@ void MainFrame::OnButton1Clicked(wxCommandEvent& evt) {
         
 
         // Enroll for a Bank Account button
-        wxPanel* enrollPanel = new wxPanel(bankpanel, wxID_ANY, wxPoint(378, 318), wxSize(504, 94));
-        enrollPanel->SetBackgroundColour(*wxBLACK);
-        wxButton* enrollButton = new wxButton(enrollPanel, wxID_ANY, "Enroll for a Bank Account", wxPoint(2, 2), wxSize(500, 90));
+        wxButton* enrollButton = new wxButton(bankpanel, wxID_ANY, "Enroll for a Bank Account", wxPoint(378, 318), wxSize(500, 90));
         enrollButton->SetFont(buttonFont);
         enrollButton->Bind(wxEVT_BUTTON, &MainFrame::OnEnrollButtonClicked, this);
        
+        // FORGOT PIN
+        Forgotpin = new wxButton(bankpanel, wxID_ANY,"FORGOT PIN", wxPoint(378, 418), wxSize(504, 94));
+        Forgotpin->SetFont(buttonFont);
+        Forgotpin->Bind(wxEVT_BUTTON, &MainFrame::OnRecoverPin, this);
 
         // Return to Main Menu button
         wxPanel* returnPanel = new wxPanel(bankpanel, wxID_ANY, wxPoint(378, 518), wxSize(504, 94));
         returnPanel->SetBackgroundColour(*wxBLACK);
-        wxButton* returnButton = new wxButton(returnPanel, wxID_ANY, "3. Return back to the main menu", wxPoint(2, 2), wxSize(500, 90));
+        wxButton* returnButton = new wxButton(returnPanel, wxID_ANY, " Return back to the main menu", wxPoint(2, 2), wxSize(500, 90));
         returnButton->SetFont(buttonFont);
         returnButton->Bind(wxEVT_BUTTON, &MainFrame::OnReturnButtonClicked, this);
     
@@ -141,19 +157,24 @@ void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
         EnrollPanel->SetBackgroundColour(*wxWHITE);
         EnrollPanel->Show();
 
-        Inputname = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 318), wxSize(504, 94));
+        Inputname = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 218), wxSize(504, 94));
         Inputname->SetFont(buttonFont);
         Inputname->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
 
 
-        InputPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 418), wxSize(504, 94));
+        InputPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 318), wxSize(504, 94));
         InputPin->SetFont(buttonFont);
         InputPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
         InputPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
-        ConfirmButton = new wxButton(EnrollPanel, wxID_ANY, "Confirm Account", wxPoint(378, 518), wxSize(504, 94));
+        ConfirmButton = new wxButton(EnrollPanel, wxID_ANY, "Confirm Account", wxPoint(378, 418), wxSize(504, 94));
         ConfirmButton->SetFont(buttonFont);
         ConfirmButton->Bind(wxEVT_BUTTON, &MainFrame::onConfirmButtonClicked, this); ConfirmButton->Disable();
+
+        calendar = new wxCalendarCtrl(EnrollPanel, wxID_ANY, wxDefaultDateTime, wxPoint(128, 218), wxSize(250, 200));
+        calendar->SetFont(buttonFont);
+        calendar->Bind(wxEVT_CALENDAR_SEL_CHANGED, &MainFrame::OnDateChanged, this);
+
 
         ExitEnrollButton = new wxButton(EnrollPanel, wxID_ANY, "return to menu", wxPoint(378, 618), wxSize(504, 94));
         ExitEnrollButton->SetFont(buttonFont);
@@ -163,6 +184,78 @@ void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
         return;
     }
   
+}
+//RECOVER PIN
+void MainFrame::OnRecoverPin(wxCommandEvent& evt) {
+    bankpanel->Hide();
+
+    Recoverpanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
+    Recoverpanel->SetBackgroundColour(*wxWHITE);
+
+    recoveraccnum = new wxTextCtrl(Recoverpanel, wxID_ANY, " ACCOUNT NUMBER ", wxPoint(378, 218), wxSize(504, 94));
+    recoveraccnum->SetFont(buttonFont);
+    recoveraccnum->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+
+    recoverbdayyear = new wxTextCtrl(Recoverpanel, wxID_ANY, " Birthdate(YEAR) ", wxPoint(178, 318), wxSize(200, 94));
+    recoverbdayyear->SetFont(buttonFont);
+    recoverbdayyear->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+
+    recoverbdaymonth = new wxTextCtrl(Recoverpanel, wxID_ANY, " Birthdate(MONTH) ", wxPoint(478, 318), wxSize(204, 94));
+    recoverbdaymonth->SetFont(buttonFont);
+    recoverbdaymonth->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+
+    recoverbdayday = new wxTextCtrl(Recoverpanel, wxID_ANY, " Birthdate(DAY) ", wxPoint(778, 318), wxSize(200, 94));
+    recoverbdayday->SetFont(buttonFont);
+    recoverbdayday->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+
+    createnewpin = new wxTextCtrl(Recoverpanel, wxID_ANY, " INPUT NEW PIN ( 4 or 6 DIGITS )", wxPoint(378, 418), wxSize(504, 94));
+    createnewpin->SetFont(buttonFont);
+    createnewpin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+
+    recoverpin = new wxButton(Recoverpanel, wxID_ANY, "Recover Pin", wxPoint(378,518), wxSize(504, 94));
+    recoverpin->SetFont(buttonFont);
+    recoverpin->Bind(wxEVT_BUTTON, &MainFrame::OnRecoverButtonClicked,this);
+   
+    exitrecover = new wxButton(Recoverpanel, wxID_ANY, "back to main menu", wxPoint(378, 618), wxSize(504, 94));
+    exitrecover->SetFont(buttonFont);
+    exitrecover->Bind(wxEVT_BUTTON, &MainFrame::ExitRecover, this);
+}
+
+void MainFrame::OnRecoverButtonClicked(wxCommandEvent& evt) {
+    if (recoveraccnum->IsEmpty() || createnewpin->IsEmpty() || recoverbdayyear->IsEmpty() || recoverbdaymonth->IsEmpty() || recoverbdayday->IsEmpty()) {
+        wxMessageBox("PLEASE FILL OUT ALL FORMS");
+        return;
+    }
+    wxString newpen = createnewpin->GetValue();
+    if (!newpen.IsEmpty() && (newpen.Length() == 4 || newpen.Length() == 6)) {
+        
+        wxString accnum = recoveraccnum->GetValue();
+        wxString year = recoverbdayyear->GetValue();
+        wxString month = recoverbdaymonth->GetValue();
+        wxString day = recoverbdayday->GetValue();
+        wxString pin = createnewpin->GetValue();
+
+        wxString bdayinput = year + "-" + month + "-" + day;
+            if (bank.recoverpin(accnum, bdayinput, pin)) {
+                bank.savelocal();
+                Recoverpanel->Hide();
+                bankpanel->Show();
+            }
+            else {
+                return;
+            }
+
+        }
+        else {
+        wxMessageBox("Invalid Pin Length");
+        return;
+        }
+    }
+
+
+void MainFrame::ExitRecover(wxCommandEvent& evt) {
+    Recoverpanel->Hide();
+    bankpanel->Show();
 }
 
 //EXIT ENROLL
@@ -174,10 +267,10 @@ void MainFrame::ExitEnroll(wxCommandEvent& evt){
 
 //INPUT PARAMETERS
 void MainFrame::OnInputChanged(wxCommandEvent& evt){
-	if (Inputname && InputPin) {
+	if (Inputname && InputPin && calendar) {
 		wxString sname = Inputname->GetValue();
 		wxString pin = InputPin->GetValue();
-		if (!sname.IsEmpty() && (pin.length() == 4 || pin.length() == 6)) {
+		if (!sname.IsEmpty() && (pin.Length() == 4 || pin.Length() == 6)) {
 			ConfirmButton->Enable();
 		}
 		else {
@@ -186,12 +279,19 @@ void MainFrame::OnInputChanged(wxCommandEvent& evt){
 	}
 }
 
+void MainFrame::OnDateChanged(wxCalendarEvent& evt) {
+    wxDateTime selectedday = evt.GetDate();
+    wxString dateStr = selectedday.FormatISODate();
+    bdaydate = dateStr;
+}
+
 //CONFIRMATION BUTTON
 void MainFrame::onConfirmButtonClicked(wxCommandEvent& evt) {
 	info temp;
-	
-		wxString sname = temp.accname = Inputname->GetValue();
+	    wxString sname = temp.accname = Inputname->GetValue();
 		wxString spin = temp.accountpin = InputPin->GetValue();
+        wxString sbday = temp.bday = bdaydate;
+       
 		temp.balance = 5000;
 		temp.accnum = bank.randAccNum();
 		bank.newacc(temp);
@@ -437,6 +537,7 @@ void MainFrame::OnChangePinClicked(wxCommandEvent& evt) {
     ConfirmPinbutton->Bind(wxEVT_BUTTON, &MainFrame::ConfirmPin, this);
 
 
+
     ExitChangePin = new wxButton(pinPanel, wxID_ANY, "Back to ATM MACHINE", wxPoint(378, 618), wxSize(500, 90));
     ExitChangePin->SetFont(buttonFont);
     ExitChangePin->Bind(wxEVT_BUTTON, &MainFrame::exitchangepin, this);
@@ -458,6 +559,8 @@ void MainFrame::ConfirmPin(wxCommandEvent& evt) {
         }
     }
 }
+
+
 
 void MainFrame::exitchangepin(wxCommandEvent& evt) {
     pinPanel->Hide();

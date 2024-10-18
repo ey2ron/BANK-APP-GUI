@@ -1,6 +1,7 @@
 #pragma once
 #include <wx/wx.h>
 #include "BankFunctions.h"
+#include "wx//calctrl.h"
 
 class MainFrame : public wxFrame
 {
@@ -31,7 +32,7 @@ private:
 	void OnExitATMClicked(wxCommandEvent& evt);
 	void OnOkayButtonClicked(wxCommandEvent& evt);
 	void pinverifybutton(wxCommandEvent& evt);
-	void ondepositamount(wxCommandEvent& evt); 
+	void ondepositamount(wxCommandEvent& evt);
 	void onexitdisplay(wxCommandEvent& evt);
 	void onwithdrawbuttonclicked(wxCommandEvent& evt);
 	void onexitwithdraw(wxCommandEvent& evt);
@@ -39,4 +40,8 @@ private:
 	void onexittransfer(wxCommandEvent& evt);
 	void ConfirmPin(wxCommandEvent& evt);
 	void exitchangepin(wxCommandEvent& evt);
+	void OnDateChanged(wxCalendarEvent& evt);
+	void OnRecoverPin(wxCommandEvent& evt);
+	void OnRecoverButtonClicked(wxCommandEvent& evt);
+	void ExitRecover(wxCommandEvent& evt);
 };

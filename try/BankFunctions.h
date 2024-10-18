@@ -8,6 +8,7 @@ struct info{
 	wxString accnum;
 	long double balance;
 	wxString accountpin;
+	wxString bday;
 };
 
 struct user {
@@ -43,5 +44,7 @@ public:
 	wxString returnaccnum();
 	bool Transfer(wxString userid, double long amount);
 	bool changepin(wxString currentpin, wxString newpin, wxString confirmpin);
+	bool recoverpin(wxString accnum,wxString bdayinpt, wxString newpin);
+	
 };
 
