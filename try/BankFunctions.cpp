@@ -173,9 +173,9 @@ bool BankFunctions::changepin(wxString currentpin, wxString newpin, wxString con
 	}
 		usbhead->data.accountpin = confirmpin;
 		return true;
-
+		
 }
-
+//frfr
 
 
 //==============================================FILE HANDLING=============================================//
