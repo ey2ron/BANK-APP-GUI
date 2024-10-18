@@ -151,24 +151,29 @@ bool BankFunctions::Transfer(wxString userid, double long amount) {
 
 bool BankFunctions::changepin(wxString currentpin, wxString newpin, wxString confirmpin) {
 	user* current = usbhead;
-	if (usbhead->data.accountpin == newpin) {
+
+	if (current->data.accountpin != currentpin) {
+		wxMessageBox("Incorrect current PIN.");
+		return false;
+	}
+	if (current->data.accountpin == newpin) {
 		wxMessageBox("CANNOT USE THE CURRENT PIN");
 		return false;
 	}
-	if ((currentpin.length() != 4 || 6) || (newpin.length() != 4 || 6) ) {
-		if (newpin != confirmpin) {
-			wxLogMessage("new pin and confirm pin does not match");
-			return false;
-		}
-		else {
-			wxLogMessage("pin must be 4 or 6 digits");
-			return false;
-		}
+
+	if (newpin != confirmpin) {
+		wxLogMessage("New PIN and confirm PIN do not match.");
+		return false;
 	}
-	else {
+
+	if ((currentpin.length() != 4 && currentpin.length()!=6) || (newpin.length() != 4 && newpin.length()!=6) ) {
+		wxLogMessage("PIN must be 4 or 6 digits.");
+		return false;
+	
+	}
 		usbhead->data.accountpin = confirmpin;
 		return true;
-	}
+
 }
 
 
