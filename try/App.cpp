@@ -8,7 +8,7 @@ bool App::OnInit() {
 	MainFrame* mainFrame = new MainFrame("ATM NI ANO");
 	mainFrame->SetMinClientSize (wxSize(1280, 720));
 	mainFrame->SetMaxClientSize (wxSize(1280, 720));
-	mainFrame->Center();
+	mainFrame->Move(130, 80);
 	mainFrame->Show();
 	return true;
 }
