@@ -1,6 +1,7 @@
 #pragma once
 #include <wx/wx.h>
 #include "BankFunctions.h"
+#include "wx//calctrl.h"
 
 using namespace std;
 
@@ -32,9 +33,17 @@ private:
 	void OnChangePinClicked(wxCommandEvent& evt);
 	void OnExitATMClicked(wxCommandEvent& evt);
 	void OnOkayButtonClicked(wxCommandEvent& evt);
-	void PinEnterChanged(wxCommandEvent& evt);
 	void pinverifybutton(wxCommandEvent& evt);
 	void ondepositamount(wxCommandEvent& evt);
-
-	// CHIBI CUTE
+	void onexitdisplay(wxCommandEvent& evt);
+	void onwithdrawbuttonclicked(wxCommandEvent& evt);
+	void onexitwithdraw(wxCommandEvent& evt);
+	void onconfirmtransfer(wxCommandEvent& evt);
+	void onexittransfer(wxCommandEvent& evt);
+	void ConfirmPin(wxCommandEvent& evt);
+	void exitchangepin(wxCommandEvent& evt);
+	void OnDateChanged(wxCalendarEvent& evt);
+	void OnRecoverPin(wxCommandEvent& evt);
+	void OnRecoverButtonClicked(wxCommandEvent& evt);
+	void ExitRecover(wxCommandEvent& evt);
 };
