@@ -63,14 +63,14 @@ user* BankFunctions::gethead() {
 }
 
 wxString BankFunctions::randAccNum() {
-	static mt19937 gen(chrono::system_clock::now().time_since_epoch().count());
-	uniform_int_distribution<> distr(0, 999999999);
+		srand(std::time(0));
+		int number = std::rand() % 100000;
 
-	int number = distr(gen);
-	ostringstream intToNum;
-	intToNum << setw(9) << setfill('0') << number;
+		ostringstream intToNum;
+		intToNum << setw(5) << setfill('0') << number;
 
-	return intToNum.str();
+		return intToNum.str();
+
 }
 
 bool BankFunctions::uniqueAccountNumber(wxString accountNumber) {
