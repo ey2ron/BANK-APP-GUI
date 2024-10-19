@@ -5,6 +5,7 @@
 
 using namespace std;
 
+ wxColour customColor(177, 195, 154);
  wxPanel* panel;
  wxPanel* bankpanel;
  wxPanel* atmPanel;
@@ -24,7 +25,7 @@ using namespace std;
  /**/wxTextCtrl* depositamount;
  /**/wxButton* depositbutton;
 
- wxPanel* balancePanel;
+ wxPanel* balancePanel; 
 
  wxPanel* withdrawPanel;
 
@@ -38,11 +39,11 @@ using namespace std;
  
  wxFont buttonFont(14, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  wxFont ThankyouFont(28, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
- 
+ wxFont ASCIIFont(14, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_BOLD);
 
  MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
-     
-     if (!bank.isFlashDriveInserted()) {
+     FirstPanel(); 
+    /* if (!bank.isFlashDriveInserted()) {
          wxLogError("No flash drive detected. Please insert a flash drive to continue.");
          Close(true);
          return;
@@ -51,12 +52,51 @@ using namespace std;
          bank.retrievelocal();
          bank.retrieveUSB();
          FirstPanel();
-     }
+     }*/
  }
 // STARTMENU
 void MainFrame::FirstPanel() {
-    panel = new wxPanel(this);
-    panel->SetBackgroundColour(*wxLIGHT_GREY);
+    panel = new wxPanel(this); 
+    panel->SetBackgroundColour(customColor);
+    
+    wxPanel* logopanel1 = new wxPanel(panel,wxID_ANY, wxPoint(385, 80), wxSize(300, 200));
+    wxStaticText* staticText1 = new wxStaticText(logopanel1, wxID_ANY,
+        "    / $$$$$$ \n"
+        "   | _   $$ _/ \n"
+        "       |  $$    \n"
+        "       |  $$    \n"
+        "       |  $$    \n"
+        "       |  $$    \n"
+        "    / $$$$$$  \n"
+        "   | ______/  \n",
+        wxPoint(10, 10));
+    staticText1->SetFont(ASCIIFont);
+
+    wxPanel* logopanel2 = new wxPanel(panel, wxID_ANY, wxPoint(525, 80), wxSize(300, 200));
+    wxStaticText* staticText2 = new wxStaticText(logopanel2, wxID_ANY,
+        "   /$$$$$$$   \n"
+        "  | $$   __  $$  \n"
+        "  | $$        \\ $$ \n"
+        "  | $$$$$$$   \n"
+        "  | $$   __  $$  \n"
+        "  | $$         \\ $$ \n"
+        "  | $$$$$$$/  \n"
+        "  |_______/  ",
+        wxPoint(10, 10));
+    staticText2->SetFont(ASCIIFont);
+
+    wxPanel* logopanel3 = new wxPanel(panel, wxID_ANY, wxPoint(665, 80), wxSize(300, 200));
+    wxStaticText* staticText3 = new wxStaticText(logopanel3, wxID_ANY,
+        "      / $$          / $$ \n"
+        "     | $$$       / $$$ \n"
+        "     | $$$$   / $$$$ \n"
+        "     | $$ $$/$$   $$ \n"
+        "     | $$  $$$   | $$ \n"
+        "     | $$  \\ $     | $$ \n"
+        "     | $$   \\/      | $$ \n"
+        "     |__/           |__/",
+        wxPoint(10, 10));
+    staticText3->SetFont(ASCIIFont);
 
     // Interact with the Bank button
     wxPanel* IBbuttonPanel = new wxPanel(panel, wxID_ANY, wxPoint(378, 318), wxSize(504, 94));
@@ -95,7 +135,7 @@ void MainFrame::OnButton1Clicked(wxCommandEvent& evt) {
   
     panel->Hide();
         bankpanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-        bankpanel->SetBackgroundColour(*wxWHITE);   
+        bankpanel->SetBackgroundColour(customColor);
         
 
         // Enroll for a Bank Account button
@@ -107,9 +147,9 @@ void MainFrame::OnButton1Clicked(wxCommandEvent& evt) {
        
 
         // Return to Main Menu button
-        wxPanel* returnPanel = new wxPanel(bankpanel, wxID_ANY, wxPoint(378, 518), wxSize(504, 94));
+        wxPanel* returnPanel = new wxPanel(bankpanel, wxID_ANY, wxPoint(378, 418), wxSize(504, 94));
         returnPanel->SetBackgroundColour(*wxBLACK);
-        wxButton* returnButton = new wxButton(returnPanel, wxID_ANY, "3. Return back to the main menu", wxPoint(2, 2), wxSize(500, 90));
+        wxButton* returnButton = new wxButton(returnPanel, wxID_ANY, "Return back to the main menu", wxPoint(2, 2), wxSize(500, 90));
         returnButton->SetFont(buttonFont);
         returnButton->Bind(wxEVT_BUTTON, &MainFrame::OnReturnButtonClicked, this);
     
@@ -120,7 +160,7 @@ void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
     if (bank.usbempty()) {
         bankpanel->Hide();
         EnrollPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-        EnrollPanel->SetBackgroundColour(*wxWHITE);
+        EnrollPanel->SetBackgroundColour(customColor);
         EnrollPanel->Show();
 
         Inputname = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 318), wxSize(504, 94));

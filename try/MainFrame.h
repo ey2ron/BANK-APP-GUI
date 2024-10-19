@@ -2,6 +2,8 @@
 #include <wx/wx.h>
 #include "BankFunctions.h"
 
+using namespace std;
+
 class MainFrame : public wxFrame
 {
 public:
@@ -33,5 +35,6 @@ private:
 	void PinEnterChanged(wxCommandEvent& evt);
 	void pinverifybutton(wxCommandEvent& evt);
 	void ondepositamount(wxCommandEvent& evt);
-	
+
+	// CHIBI CUTE
 };

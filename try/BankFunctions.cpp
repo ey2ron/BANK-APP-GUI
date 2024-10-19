@@ -75,7 +75,7 @@ void BankFunctions::retrievelocal(){
 }
 
 void BankFunctions::retrieveUSB() {
-	string filePath = "D:/BankAccountsIBM-USB.txt";
+	string filePath = "E:/BankAccountsIBM-USB.txt";
 
 	ifstream myFile(filePath);
 	if (!myFile) {
@@ -126,7 +126,7 @@ user* BankFunctions::locateaddress(wxString num) {
 
 
 void BankFunctions::saveUSB() {
-	string filePath = "D:/BankAccountsIBM-USB.txt";
+	string filePath = "E:/BankAccountsIBM-USB.txt";
 
 
 	ofstream myFile(filePath);
@@ -232,4 +232,4 @@ void BankFunctions::deposit(long double amount) {
 	user* current = usbhead;
 		current->data.balance += amount;
 }
-// hello 
+
