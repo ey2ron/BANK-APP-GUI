@@ -70,6 +70,8 @@ wxString bdaydate;
  
  wxFont buttonFont(14, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  wxFont ThankyouFont(28, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+ wxFont ASCIIFont(14, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_BOLD);
+
  //====================================================================================================================//
 
  MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
@@ -89,6 +91,46 @@ wxString bdaydate;
 void MainFrame::FirstPanel() {
     panel = new wxPanel(this);
     panel->SetBackgroundColour(*wxLIGHT_GREY);
+
+    wxPanel* logopanel1 = new wxPanel(panel, wxID_ANY, wxPoint(385, 80), wxSize(300, 200));
+    wxStaticText* staticText1 = new wxStaticText(logopanel1, wxID_ANY,
+        "    / $$$$$$ \n"
+        "   | _   $$ _/ \n"
+        "       |  $$    \n"
+        "       |  $$    \n"
+        "       |  $$    \n"
+        "       |  $$    \n"
+        "    / $$$$$$  \n"
+        "   | ______/  \n",
+        wxPoint(10, 10));
+    staticText1->SetFont(ASCIIFont);
+
+    wxPanel* logopanel2 = new wxPanel(panel, wxID_ANY, wxPoint(525, 80), wxSize(300, 200));
+    wxStaticText* staticText2 = new wxStaticText(logopanel2, wxID_ANY,
+        "   /$$$$$$$   \n"
+        "  | $$   __  $$  \n"
+        "  | $$        \\ $$ \n"
+        "  | $$$$$$$   \n"
+        "  | $$   __  $$  \n"
+        "  | $$         \\ $$ \n"
+        "  | $$$$$$$/  \n"
+        "  |_______/  ",
+        wxPoint(10, 10));
+    staticText2->SetFont(ASCIIFont);
+
+    wxPanel* logopanel3 = new wxPanel(panel, wxID_ANY, wxPoint(665, 80), wxSize(300, 200));
+    wxStaticText* staticText3 = new wxStaticText(logopanel3, wxID_ANY,
+        "      / $$          / $$ \n"
+        "     | $$$       / $$$ \n"
+        "     | $$$$   / $$$$ \n"
+        "     | $$ $$/$$   $$ \n"
+        "     | $$  $$$   | $$ \n"
+        "     | $$  \\ $     | $$ \n"
+        "     | $$   \\/      | $$ \n"
+        "     |__/           |__/",
+        wxPoint(10, 10));
+    staticText3->SetFont(ASCIIFont);
+
 
     // Interact with the Bank button
     IBbuttonPanel = new wxPanel(panel, wxID_ANY, wxPoint(378, 318), wxSize(504, 94));
