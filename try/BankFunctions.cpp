@@ -206,11 +206,15 @@ void BankFunctions::savelocal() {
 	myFile << "AccountName AccountNumber Balance Pin Bday" << endl;
 	user* p = head;
 	while (p != nullptr) {
-		myFile << p->data.accname << " "
-			<< p->data.accnum << " "
+		wxString encname = encryption(p->data.accname);
+		wxString encnum = encryption(p->data.accnum);
+		wxString encpin = encryption(p->data.accountpin);
+		wxString encbday = encryption(p->data.bday);
+		myFile << encname << " "
+			<< encnum << " "
 			<< p->data.balance << " "
-			<< p->data.accountpin << " "
-			<< p->data.bday <<endl;
+			<< encpin << " "
+			<< encbday <<endl;
 		p = p->next;
 	}
 
@@ -230,10 +234,14 @@ void BankFunctions::retrievelocal() {
 	getline(myFile, header);
 	string name, num, pin, bday;
 	while (myFile >> name >> num >> p.balance >> pin >> bday) {
-		p.accname = wxString(name);
-		p.accnum = wxString(num);
-		p.accountpin = pin;
-		p.bday = wxString(bday);
+		wxString decname = decrypt(name);
+		wxString decnum = decrypt(num);
+		wxString decpin = decrypt(pin);
+		wxString decbday = decrypt(bday);
+		p.accname = decname;
+		p.accnum =decnum;
+		p.accountpin =decpin;
+		p.bday = decbday;
 		Adduser(p);
 	}
 
@@ -334,4 +342,23 @@ bool BankFunctions::recoverpin(wxString accnum, wxString bdayinput,wxString newp
 		wxMessageBox("BDAY OR ACCOUNT NUM NOT MATCHED, PLEASE INPUT CORRECT BDAY");
 		return false;
 	}
+}
+// ======================================= ENCRYPTION ==============================================//
+
+wxString BankFunctions::encryption(wxString input) {
+	string encrypted;
+	for (char c : input) {
+		char encryptedchar = c + 5;
+		encrypted += encryptedchar;
+	}
+	return encrypted;
+}
+
+wxString BankFunctions::decrypt(wxString input) {
+	string decrypted;
+	for (char c : input) {
+		char decryptedchar = c - 5;
+		decrypted += decryptedchar;
+	}
+	return decrypted;
 }

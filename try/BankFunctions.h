@@ -46,5 +46,8 @@ public:
 	bool changepin(wxString currentpin, wxString newpin, wxString confirmpin);
 	bool recoverpin(wxString accnum,wxString bdayinpt, wxString newpin);
 	
+	wxString encryption(wxString input);
+	wxString decrypt(wxString input);
+	
 };
 
