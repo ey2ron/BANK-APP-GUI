@@ -7,6 +7,7 @@
 
 using namespace std;
 
+wxColour customColor(177, 195, 154); 
 wxString bdaydate;
 
  wxPanel* panel;
@@ -75,8 +76,8 @@ wxString bdaydate;
  //====================================================================================================================//
 
  MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
-     
-     if (!bank.isFlashDriveInserted()) {
+     FirstPanel();
+     /*if (!bank.isFlashDriveInserted()) {
          wxLogError("No flash drive detected. Please insert a flash drive to continue.");
          Close(true);
          return;
@@ -85,12 +86,12 @@ wxString bdaydate;
          bank.retrievelocal();
          bank.retrieveUSB();
          FirstPanel();
-     }
+     }*/
  }
 // STARTMENU
 void MainFrame::FirstPanel() {
     panel = new wxPanel(this);
-    panel->SetBackgroundColour(*wxLIGHT_GREY);
+    panel->SetBackgroundColour(customColor); 
 
     wxPanel* logopanel1 = new wxPanel(panel, wxID_ANY, wxPoint(385, 80), wxSize(300, 200));
     wxStaticText* staticText1 = new wxStaticText(logopanel1, wxID_ANY,
