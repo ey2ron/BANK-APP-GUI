@@ -46,4 +46,5 @@ private:
 	void OnRecoverButtonClicked(wxCommandEvent& evt);
 	void ExitRecover(wxCommandEvent& evt);
 	// UI MASCOT
+	void signuppanelui();
 };

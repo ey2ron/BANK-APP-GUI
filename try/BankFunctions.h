@@ -4,7 +4,6 @@
 #include <wx/wx.h>
 
 struct info{
-	wxString fullname;
 	wxString accname;
 	wxString accnum;
 	long double balance;

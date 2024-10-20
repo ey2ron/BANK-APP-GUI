@@ -27,6 +27,7 @@ wxString bdaydate;
  wxCalendarCtrl* calendar;
  wxPanel* IBbuttonPanel;
  wxTextCtrl* reenterPin;
+ wxTextCtrl* reenternewpin;
 
  //================================================= TRANSACTION PANELS =============================================//
  wxPanel* depositPanel;
@@ -70,7 +71,8 @@ wxString bdaydate;
  wxPanel* exitPanel;
 
 
- 
+ wxFont inputfont(12, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+ wxFont inputfont2(20, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
  wxFont buttonFont(14, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  wxFont buttonFont1(10, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  wxFont ThankyouFont(28, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
@@ -203,33 +205,42 @@ void MainFrame::OnButton1Clicked(wxCommandEvent& evt) {
 void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
     if (bank.usbempty()) {
         bankpanel->Hide();
+
         EnrollPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
         EnrollPanel->SetBackgroundColour(customColor);
         EnrollPanel->Show();
 
-        Inputname = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 118), wxSize(504, 44));
-        Inputname->SetFont(buttonFont);
+        signuppanelui();
+        wxStaticText* SInputname = new wxStaticText(EnrollPanel, wxID_ANY, "Input Name:", wxPoint(40, 80), wxSize(450, 30));
+        SInputname->SetFont(buttonFont); 
+        Inputname = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 110), wxSize(500, 30));
+        Inputname->SetFont(inputfont);
         Inputname->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
 
-
-        InputPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 218), wxSize(504, 44));
-        InputPin->SetFont(buttonFont);
-        InputPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
-        InputPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
-
-        reenterPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(378, 318), wxSize(404, 44));
-        reenterPin->SetFont(buttonFont);
-        reenterPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
-        reenterPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
-
-        ConfirmButton = new wxButton(EnrollPanel, wxID_ANY, "Confirm Account", wxPoint(378, 418), wxSize(504, 94));
-        ConfirmButton->SetFont(buttonFont);
-        ConfirmButton->Bind(wxEVT_BUTTON, &MainFrame::onConfirmButtonClicked, this); ConfirmButton->Disable();
-
-        calendar = new wxCalendarCtrl(EnrollPanel, wxID_ANY, wxDefaultDateTime, wxPoint(128, 218), wxSize(250, 200));
+        wxStaticText* SCalendar = new wxStaticText(EnrollPanel, wxID_ANY, "Select your birth date:", wxPoint(40, 350), wxSize(450, 30));
+        SCalendar->SetFont(buttonFont);
+        calendar = new wxCalendarCtrl(EnrollPanel, wxID_ANY, wxDefaultDateTime, wxPoint(40, 365), wxSize(220, 170));
         calendar->SetFont(buttonFont);
         calendar->Bind(wxEVT_CALENDAR_SEL_CHANGED, &MainFrame::OnDateChanged, this);
 
+        wxStaticText* SInputpin = new wxStaticText(EnrollPanel, wxID_ANY, "Input Password (4 or 6 Digits)", wxPoint(40, 170), wxSize(450, 30));
+        SInputpin->SetFont(buttonFont);
+        InputPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 200), wxSize(500, 30));
+        InputPin->SetFont(inputfont);
+        InputPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
+        InputPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+
+        wxStaticText* SreenterPin = new wxStaticText(EnrollPanel, wxID_ANY, "Reenter Pin:", wxPoint(40, 260), wxSize(450, 30));
+        SreenterPin->SetFont(buttonFont);
+        reenterPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 290), wxSize(500, 30));
+        reenterPin->SetFont(inputfont);
+        reenterPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
+        reenterPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+
+        ConfirmButton = new wxButton(EnrollPanel, wxID_ANY, "Sign Up", wxPoint(220, 560), wxSize(130, 50));
+        ConfirmButton->SetFont(buttonFont);
+        ConfirmButton->SetForegroundColour(*wxGREEN);
+        ConfirmButton->Bind(wxEVT_BUTTON, &MainFrame::onConfirmButtonClicked, this); ConfirmButton->Disable();
 
         ExitEnrollButton = new wxButton(EnrollPanel, wxID_ANY, "return to menu", wxPoint(1100, 660), wxSize(165, 45));
         ExitEnrollButton->SetFont(buttonFont1);
@@ -245,34 +256,80 @@ void MainFrame::OnRecoverPin(wxCommandEvent& evt) {
     bankpanel->Hide();
 
     Recoverpanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    Recoverpanel->SetBackgroundColour(*wxWHITE);
+    Recoverpanel->SetBackgroundColour(customColor);
 
-    recoveraccnum = new wxTextCtrl(Recoverpanel, wxID_ANY, " ACCOUNT NUMBER ", wxPoint(378, 218), wxSize(504, 94));
-    recoveraccnum->SetFont(buttonFont);
+    new wxStaticText(Recoverpanel, wxID_ANY, "Account Number:", wxPoint(350, 180)); 
+    recoveraccnum = new wxTextCtrl(Recoverpanel, wxID_ANY, "Enter Account Number ", wxPoint(350, 210), wxSize(550, 50), wxTE_CENTER);
+    recoveraccnum->SetFont(inputfont2);
     recoveraccnum->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+    recoveraccnum->Bind(wxEVT_SET_FOCUS, [=](wxFocusEvent& event) {
+        if (recoveraccnum->GetValue() == "Enter Account Number ") {
+            recoveraccnum->Clear();
+        }
+        event.Skip();
+        });
 
-    recoverbdayyear = new wxTextCtrl(Recoverpanel, wxID_ANY, " Birthdate(YEAR) ", wxPoint(178, 318), wxSize(200, 94));
-    recoverbdayyear->SetFont(buttonFont);
+    new wxStaticText(Recoverpanel, wxID_ANY, "Birthdate (Year):", wxPoint(350, 280));
+    recoverbdayyear = new wxTextCtrl(Recoverpanel, wxID_ANY, " Birthdate(YEAR) ", wxPoint(350, 310), wxSize(165, 30), wxTE_CENTER);
+    recoverbdayyear->SetFont(inputfont);
     recoverbdayyear->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+    recoverbdayyear->Bind(wxEVT_SET_FOCUS, [=](wxFocusEvent& event) {
+        if (recoverbdayyear->GetValue() == " Birthdate(YEAR) ") {
+            recoverbdayyear->Clear();
+        }
+        event.Skip();
+        });
 
-    recoverbdaymonth = new wxTextCtrl(Recoverpanel, wxID_ANY, " Birthdate(MONTH) ", wxPoint(478, 318), wxSize(204, 94));
-    recoverbdaymonth->SetFont(buttonFont);
+    new wxStaticText(Recoverpanel, wxID_ANY, "Birthdate (Month):", wxPoint(545, 280));
+    recoverbdaymonth = new wxTextCtrl(Recoverpanel, wxID_ANY, " Birthdate(MONTH) ", wxPoint(545, 310), wxSize(165, 30), wxTE_CENTER);
+    recoverbdaymonth->SetFont(inputfont);
     recoverbdaymonth->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+    recoverbdaymonth->Bind(wxEVT_SET_FOCUS, [=](wxFocusEvent& event) {
+        if (recoverbdaymonth->GetValue() == " Birthdate(MONTH) ") {
+            recoverbdaymonth->Clear();
+        }
+        event.Skip();
+        });
 
-    recoverbdayday = new wxTextCtrl(Recoverpanel, wxID_ANY, " Birthdate(DAY) ", wxPoint(778, 318), wxSize(200, 94));
-    recoverbdayday->SetFont(buttonFont);
+    new wxStaticText(Recoverpanel, wxID_ANY, "Birthdate (Day):", wxPoint(740, 280));
+    recoverbdayday = new wxTextCtrl(Recoverpanel, wxID_ANY, " Birthdate(DAY) ", wxPoint(740, 310), wxSize(163, 30), wxTE_CENTER);
+    recoverbdayday->SetFont(inputfont);
     recoverbdayday->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+    recoverbdayday->Bind(wxEVT_SET_FOCUS, [=](wxFocusEvent& event) {
+        if (recoverbdayday->GetValue() == " Birthdate(DAY) ") {
+            recoverbdayday->Clear();
+        }
+        event.Skip();
+        });
 
-    createnewpin = new wxTextCtrl(Recoverpanel, wxID_ANY, " INPUT NEW PIN ( 4 or 6 DIGITS )", wxPoint(378, 418), wxSize(504, 94));
-    createnewpin->SetFont(buttonFont);
+    new wxStaticText(Recoverpanel, wxID_ANY, "New PIN (4 or 6 digits):", wxPoint(350, 380));
+    createnewpin = new wxTextCtrl(Recoverpanel, wxID_ANY, " Input New Pin ( 4 or 6 digits)", wxPoint(350, 410), wxSize(550, 50), wxTE_CENTER);
+    createnewpin->SetFont(inputfont2);
     createnewpin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+    createnewpin->Bind(wxEVT_SET_FOCUS, [=](wxFocusEvent& event) {
+        if (createnewpin->GetValue() == " Input New Pin ( 4 or 6 digits)") {
+            createnewpin->Clear();
+        }
+        event.Skip();
+        });
 
-    recoverpin = new wxButton(Recoverpanel, wxID_ANY, "Recover Pin", wxPoint(378,518), wxSize(504, 94));
+    new wxStaticText(Recoverpanel, wxID_ANY, "Re-enter New Pin:", wxPoint(350, 480));
+    reenternewpin = new wxTextCtrl(Recoverpanel, wxID_ANY, " Reenter Pin", wxPoint(350, 510), wxSize(550, 50), wxTE_CENTER);
+    reenternewpin->SetFont(inputfont2);
+    reenternewpin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+    reenternewpin->Bind(wxEVT_SET_FOCUS, [=](wxFocusEvent& event) {
+        if (reenternewpin->GetValue() == " reenter pin") {
+            reenternewpin->Clear();
+        }
+        event.Skip();
+        });
+
+    recoverpin = new wxButton(Recoverpanel, wxID_ANY, "Recover Pin", wxPoint(378,610), wxSize(500, 70));
     recoverpin->SetFont(buttonFont);
     recoverpin->Bind(wxEVT_BUTTON, &MainFrame::OnRecoverButtonClicked,this);
    
-    exitrecover = new wxButton(Recoverpanel, wxID_ANY, "back to main menu", wxPoint(378, 618), wxSize(504, 94));
-    exitrecover->SetFont(buttonFont);
+    exitrecover = new wxButton(Recoverpanel, wxID_ANY, "return to menu", wxPoint(1100, 660), wxSize(165, 45));
+    exitrecover->SetFont(buttonFont1);
     exitrecover->Bind(wxEVT_BUTTON, &MainFrame::ExitRecover, this);
 }
 
@@ -282,15 +339,16 @@ void MainFrame::OnRecoverButtonClicked(wxCommandEvent& evt) {
         return;
     }
     wxString newpen = createnewpin->GetValue();
+    wxString newpen2 = reenternewpin->GetValue();
     if (!newpen.IsEmpty() && (newpen.Length() == 4 || newpen.Length() == 6)) {
-        
-        wxString accnum = recoveraccnum->GetValue();
-        wxString year = recoverbdayyear->GetValue();
-        wxString month = recoverbdaymonth->GetValue();
-        wxString day = recoverbdayday->GetValue();
-        wxString pin = createnewpin->GetValue();
+        if (newpen == newpen2) { 
+            wxString accnum = recoveraccnum->GetValue();
+            wxString year = recoverbdayyear->GetValue();
+            wxString month = recoverbdaymonth->GetValue();
+            wxString day = recoverbdayday->GetValue();
+            wxString pin = createnewpin->GetValue();
 
-        wxString bdayinput = year + "-" + month + "-" + day;
+            wxString bdayinput = year + "-" + month + "-" + day;
             if (bank.recoverpin(accnum, bdayinput, pin)) {
                 bank.savelocal();
                 Recoverpanel->Hide();
@@ -301,11 +359,16 @@ void MainFrame::OnRecoverButtonClicked(wxCommandEvent& evt) {
             }
 
         }
-        else {
+        else 
+            wxMessageBox("PIN DOES NOT MATCH");
+        return;
+
+    }
+    else {
         wxMessageBox("Invalid Pin Length");
         return;
-        }
     }
+}
 
 
 void MainFrame::ExitRecover(wxCommandEvent& evt) {
@@ -648,4 +711,51 @@ void MainFrame::OnOkayButtonClicked(wxCommandEvent& evt) {
 void MainFrame::OnButton3Clicked(wxCommandEvent& evt) {
     wxLogMessage("System Closing");
     Close(true); 
+}
+
+// THE BANK PET(ui)
+
+void MainFrame::signuppanelui() {
+
+    wxPanel* mascotpanel1 = new wxPanel(EnrollPanel, wxID_ANY, wxPoint(600,2), wxSize(550,600));
+    wxStaticText* mascot1 = new wxStaticText(mascotpanel1, wxID_ANY,
+    "                               # *                              \n"
+    "                             *-=-=                              \n"
+    "                           #-- - -@                             \n"
+    "                          ---- = -.                 - -.-- =    \n"
+    "      =--*@             @-----:.: +@                        @   \n"
+    "     -=-----@         #-----+=- -:+              +              \n"
+    "     -==-------*+=--==------*+-:..-@           @           *    \n"
+    "     -----------------------+==:  -*                     .      \n"
+    "     =-:++--------------------+. .-#          @-        @       \n"
+    "    %- ==-------------------------+          ----               \n"
+    "      -+.----+----------------------*         -------#          \n"
+    "      *----------------       -------@       @------+           \n"
+    "       =-------------:   @@@@   -----+       @------#           \n"
+    "       #-:     ------   .@@@@@   -----     #-*-=----@           \n"
+    "       +-  .@@@ -----    =@@@    -----   +--@-@-----@           \n"
+    "       =   -@@@  ----           :-----  #-@--+---=--            \n"
+    "       +:        -----        .--   --@ =--@@@@-=---@           \n"
+    "       %-       .----------------. ---@@---@@@=-----*           \n"
+    "        ---    ---%------------------=--------@+----=           \n"
+    "        + --------=:--:---------------------@   -----@          \n"
+    "         #---------     .----------+-=-----@     #-----         \n"
+    "         +--------=    +-------==-------@        *----@         \n"
+    "         @ @@--------: =-----+==------+@          @-----        \n"
+    "          @     @@+--+=.%======-----====@          @----@       \n"
+    "                +-#=+*=====   ----======@          ----#        \n"
+    "              @-===%==+==     :---======*          ----=        \n"
+    "             @--==+=-==+==    .---=======@         =----        \n"
+    "            @--====   ====    .---*======          ----+        \n"
+    "            @--=+      :=-    ----*=====%         @----@        \n"
+    "              @---             ----*=====@        %----#        \n"
+    "             @--=            -----====*         *----+          \n"
+    "              ++---        -------+@          +-----#           \n"
+    "              @-----------------------------------=@            \n"
+    "             @--------+=*%+--------------------*@               \n"
+    "            #------*        +------#  @@@@@                     \n"
+    "       @%+++------           =------+@                          \n"
+    "      *+--------=            @-----=--*                         \n"
+    "       @*------=@             *----#*@@                         \n",                                                                 
+        wxPoint(10, 10));
 }
