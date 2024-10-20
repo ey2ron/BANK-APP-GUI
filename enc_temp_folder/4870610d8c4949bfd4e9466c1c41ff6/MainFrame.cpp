@@ -70,7 +70,7 @@ wxString bdaydate;
  wxPanel* exitPanel;
 
 
- wxFont inputfont(12, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+ 
  wxFont buttonFont(14, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  wxFont buttonFont1(10, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  wxFont ThankyouFont(28, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
@@ -222,7 +222,7 @@ void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
         reenterPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
         reenterPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
-        ConfirmButton = new wxButton(EnrollPanel, wxID_ANY, "Sign Up", wxPoint(378, 418), wxSize(504, 94));
+        ConfirmButton = new wxButton(EnrollPanel, wxID_ANY, "Confirm Account", wxPoint(378, 418), wxSize(504, 94));
         ConfirmButton->SetFont(buttonFont);
         ConfirmButton->Bind(wxEVT_BUTTON, &MainFrame::onConfirmButtonClicked, this); ConfirmButton->Disable();
 

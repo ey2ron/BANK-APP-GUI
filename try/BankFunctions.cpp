@@ -223,7 +223,7 @@ void BankFunctions::savelocal() {
 }
 
 void BankFunctions::retrievelocal() {
-	info p;
+	info p;	
 	ifstream myFile("BankAccountsIBM.txt");
 	if (!myFile) {
 		wxLogError("File Errorg.");

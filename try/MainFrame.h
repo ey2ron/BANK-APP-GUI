@@ -11,7 +11,8 @@ private:
 	//Bankfunctions class
 	BankFunctions bank;
 	//MAINMENU
-	void FirstPanel();
+	void IBMlogo();
+	void FirstPanel();	
 	void ATMPANEL();
 	// START MENU BUTTONS
 	void OnButton1Clicked(wxCommandEvent& evt);

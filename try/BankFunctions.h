@@ -4,13 +4,14 @@
 #include <wx/wx.h>
 
 struct info{
+	wxString fullname;
 	wxString accname;
 	wxString accnum;
 	long double balance;
 	wxString accountpin;
 	wxString bday;
 };
-//hello
+
 struct user {
 	info data;
 	user* next;
