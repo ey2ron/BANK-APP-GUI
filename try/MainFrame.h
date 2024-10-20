@@ -45,5 +45,5 @@ private:
 	void OnRecoverPin(wxCommandEvent& evt);
 	void OnRecoverButtonClicked(wxCommandEvent& evt);
 	void ExitRecover(wxCommandEvent& evt);
-	// UI MASCOT
+	
 };

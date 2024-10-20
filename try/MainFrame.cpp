@@ -73,16 +73,18 @@ wxString bdaydate;
 
  wxFont inputfont(12, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
  wxFont inputfont2(20, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+ wxFont inputfont3(38, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
  wxFont buttonFont(14, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  wxFont buttonFont1(10, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  wxFont ThankyouFont(28, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  wxFont ASCIIFont(14, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_BOLD);
+ wxFont ASCIIFont1(10, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
 
  //====================================================================================================================//
 
  MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
-     FirstPanel();
-     /*if (!bank.isFlashDriveInserted()) {
+  
+     if (!bank.isFlashDriveInserted()) {
          wxLogError("No flash drive detected. Please insert a flash drive to continue.");
          Close(true);
          return;
@@ -91,7 +93,7 @@ wxString bdaydate;
          bank.retrievelocal();
          bank.retrieveUSB();
          FirstPanel();
-     }*/
+     }
  }
 // STARTMENU
 void MainFrame::FirstPanel() {
@@ -176,19 +178,31 @@ void MainFrame::IBMlogo() {
 
     // BANK MENU
 void MainFrame::OnButton1Clicked(wxCommandEvent& evt) {
-  
+   
+
     panel->Hide();
         bankpanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
         bankpanel->SetBackgroundColour(customColor);   
         
 
+        wxPanel* thebank = new wxPanel(bankpanel, wxID_ANY, wxPoint(285, 80), wxSize(900, 200));
+        wxStaticText* thebankk = new wxStaticText(thebank, wxID_ANY,
+            " _________  ____  ____  ________        ______        _       ____  _____  ___  ____   \n"
+            "|  _   _  ||_   ||   _||_   __  |      |_   _ \\      / \\     |_   \\|_   _||_  ||_  _|  \n"
+            "|_/ | | \\_|  | |__| |    | |_ \\_|        | |_) |    / _ \\      |   \\ | |    | |_/ /    \n"
+            "    | |      |  __  |    |  _| _         |  __'.   / ___ \\     | |\\ \\| |    |  __'.    \n"
+            "   _| |_    _| |  | |_  _| |__/ |       _| |__) |_/ /   \\ \\_  _| |_\\   |_  _| |  \\ \\_  \n"
+            "  |_____|  |____||____||________|      |_______/|____| |____||_____ \\____||____||____| \n",
+            wxPoint(10, 10));
+        thebankk->SetFont(ASCIIFont1);
+
         // Enroll for a Bank Account button
-        wxButton* enrollButton = new wxButton(bankpanel, wxID_ANY, "Enroll for a Bank Account", wxPoint(378, 318), wxSize(500, 90));
+        wxButton* enrollButton = new wxButton(bankpanel, wxID_ANY, "Enroll for a Bank Account", wxPoint(378, 290), wxSize(500, 90));
         enrollButton->SetFont(buttonFont);
         enrollButton->Bind(wxEVT_BUTTON, &MainFrame::OnEnrollButtonClicked, this);
        
         // FORGOT PIN
-        Forgotpin = new wxButton(bankpanel, wxID_ANY,"Forgot Pin", wxPoint(378, 418), wxSize(504, 94));
+        Forgotpin = new wxButton(bankpanel, wxID_ANY,"Forgot Pin", wxPoint(378, 390), wxSize(504, 94));
         Forgotpin->SetFont(buttonFont);
         Forgotpin->Bind(wxEVT_BUTTON, &MainFrame::OnRecoverPin, this);
 
@@ -200,6 +214,8 @@ void MainFrame::OnButton1Clicked(wxCommandEvent& evt) {
         returnButton->Bind(wxEVT_BUTTON, &MainFrame::OnReturnButtonClicked, this);
     
 }
+
+
 //ENROLL PANEL
 
 void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
@@ -210,33 +226,44 @@ void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
         EnrollPanel->SetBackgroundColour(customColor);
         EnrollPanel->Show();
 
-        wxStaticText* SInputname = new wxStaticText(EnrollPanel, wxID_ANY, "Input Name:", wxPoint(40, 80), wxSize(450, 30));
+        wxPanel* thebank2 = new wxPanel(EnrollPanel, wxID_ANY, wxPoint(320, 10), wxSize(900, 110));
+        wxStaticText* thebankk2 = new wxStaticText(thebank2, wxID_ANY,
+            "  ______   _____   ______  ____  _____   _____  _____  _______   \n"
+            ".' ____ \\ |_   _|.' ___  ||_   \\|_   _| |_   _||_   _||_   __ \\  \n"
+            "| (___ \\_|  | | / .'   \\_|  |   \\ | |     | |    | |    | |__) | \n"
+            " _.____`.   | | | |   ____  | |\\ \\| |     | '    ' |    |  ___/  \n"
+            "| \\____) | _| |_\\ `.___]  |_| |_\\   |_     \\ \\__/ /    _| |_     \n"
+            " \\______.'|_____|`._____.'|_____| \\____|     `.__.'    |_____|    \n",
+            wxPoint(10, 10));
+        thebankk2->SetFont(ASCIIFont1);
+
+        wxStaticText* SInputname = new wxStaticText(EnrollPanel, wxID_ANY, "Input Name:", wxPoint(40, 130), wxSize(450, 30));
         SInputname->SetFont(buttonFont); 
-        Inputname = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 110), wxSize(500, 30));
+        Inputname = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 150), wxSize(500, 30));
         Inputname->SetFont(inputfont);
         Inputname->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
 
-        wxStaticText* SCalendar = new wxStaticText(EnrollPanel, wxID_ANY, "Select your birth date:", wxPoint(40, 350), wxSize(450, 30));
+        wxStaticText* SCalendar = new wxStaticText(EnrollPanel, wxID_ANY, "Select your birth date:", wxPoint(40, 400), wxSize(450, 30));
         SCalendar->SetFont(buttonFont);
-        calendar = new wxCalendarCtrl(EnrollPanel, wxID_ANY, wxDefaultDateTime, wxPoint(40, 365), wxSize(220, 170));
+        calendar = new wxCalendarCtrl(EnrollPanel, wxID_ANY, wxDefaultDateTime, wxPoint(40, 415), wxSize(220, 170));
         calendar->SetFont(buttonFont);
         calendar->Bind(wxEVT_CALENDAR_SEL_CHANGED, &MainFrame::OnDateChanged, this);
 
-        wxStaticText* SInputpin = new wxStaticText(EnrollPanel, wxID_ANY, "Input Password (4 or 6 Digits)", wxPoint(40, 170), wxSize(450, 30));
+        wxStaticText* SInputpin = new wxStaticText(EnrollPanel, wxID_ANY, "Input Password (4 or 6 Digits)", wxPoint(40, 220), wxSize(450, 30));
         SInputpin->SetFont(buttonFont);
-        InputPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 200), wxSize(500, 30));
+        InputPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 250), wxSize(500, 30));
         InputPin->SetFont(inputfont);
         InputPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
         InputPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
-        wxStaticText* SreenterPin = new wxStaticText(EnrollPanel, wxID_ANY, "Reenter Pin:", wxPoint(40, 260), wxSize(450, 30));
+        wxStaticText* SreenterPin = new wxStaticText(EnrollPanel, wxID_ANY, "Reenter Pin:", wxPoint(40, 310), wxSize(450, 30));
         SreenterPin->SetFont(buttonFont);
-        reenterPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 290), wxSize(500, 30));
+        reenterPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 340), wxSize(500, 30));
         reenterPin->SetFont(inputfont);
         reenterPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
         reenterPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
-        ConfirmButton = new wxButton(EnrollPanel, wxID_ANY, "Sign Up", wxPoint(220, 560), wxSize(130, 50));
+        ConfirmButton = new wxButton(EnrollPanel, wxID_ANY, "Continue", wxPoint(220, 610), wxSize(130, 50));
         ConfirmButton->SetFont(buttonFont);
         ConfirmButton->SetForegroundColour(*wxGREEN);
         ConfirmButton->Bind(wxEVT_BUTTON, &MainFrame::onConfirmButtonClicked, this); ConfirmButton->Disable();
@@ -256,6 +283,17 @@ void MainFrame::OnRecoverPin(wxCommandEvent& evt) {
 
     Recoverpanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
     Recoverpanel->SetBackgroundColour(customColor);
+
+    wxPanel* thebank1 = new wxPanel(Recoverpanel, wxID_ANY, wxPoint(320, 30), wxSize(900, 200));
+    wxStaticText* thebankk1 = new wxStaticText(thebank1, wxID_ANY,
+        " _______     ________    ______    ___   ____   ____  ________  _______     \n"
+        "|_   __ \\   |_   __  | .' ___  | .'   `. |_  _| |_  _||_   __  ||_   __ \\    \n"
+        "  | |__) |    | |_ \\_|/ .'   \\_|/  .-.  \\ \\ \\   / /    | |_ \\_|  | |__) |   \n"
+        "  |  __ /     |  _| _ | |       | |   | |  \\ \\ / /     |  _| _   |  __ /    \n"
+        " _| |  \\ \\_  _| |__/ |\\ `.___.'\\\\  `-'  /   \\ ' /     _| |__/ | _| |  \\ \\_  \n"
+        "|____| |___||________| `.____ .' `.___.'     \\_/     |________||____| |___| \n",
+        wxPoint(10, 10));
+    thebankk1->SetFont(ASCIIFont1);
 
     new wxStaticText(Recoverpanel, wxID_ANY, "Account Number:", wxPoint(350, 180)); 
     recoveraccnum = new wxTextCtrl(Recoverpanel, wxID_ANY, "Enter Account Number ", wxPoint(350, 210), wxSize(550, 50), wxTE_CENTER);
@@ -331,6 +369,7 @@ void MainFrame::OnRecoverPin(wxCommandEvent& evt) {
     exitrecover->SetFont(buttonFont1);
     exitrecover->Bind(wxEVT_BUTTON, &MainFrame::ExitRecover, this);
 }
+
 
 void MainFrame::OnRecoverButtonClicked(wxCommandEvent& evt) {
     if (recoveraccnum->IsEmpty() || createnewpin->IsEmpty() || recoverbdayyear->IsEmpty() || recoverbdaymonth->IsEmpty() || recoverbdayday->IsEmpty()) {
@@ -435,12 +474,17 @@ void MainFrame::OnReturnButtonClicked(wxCommandEvent& evt) {
 void MainFrame::OnButton2Clicked(wxCommandEvent& evt) {
     panel->Hide();
     enterpinPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    pinenter = new wxTextCtrl(enterpinPanel, wxID_ANY,"ENTER PIN HERE", wxPoint(378, 18), wxSize(504, 94),wxTE_PASSWORD);
-    pinenter->SetFont(buttonFont);
+    enterpinPanel->SetBackgroundColour(customColor);
+
+    wxStaticText* pinenterhere = new wxStaticText(enterpinPanel, wxID_ANY, " Enter Pin Here", wxPoint(360, 220), wxSize(500, 30));
+    pinenterhere->SetFont(buttonFont);
+
+    pinenter = new wxTextCtrl(enterpinPanel, wxID_ANY,"", wxPoint(360, 250), wxSize(500, 94), wxTE_PASSWORD | wxTE_CENTER);
+    pinenter->SetFont(inputfont3);
     pinenter->SetValidator(wxTextValidator(wxFILTER_DIGITS));
   
 
-    pinverify = new wxButton(enterpinPanel, wxID_ANY, "Confirm Pin", wxPoint(378, 100), wxSize(400, 94));
+    pinverify = new wxButton(enterpinPanel, wxID_ANY, "Confirm Pin", wxPoint(410, 350), wxSize(400, 94));
     pinverify->SetFont(buttonFont);
     pinverify->Bind(wxEVT_BUTTON, &MainFrame::pinverifybutton, this);
    
@@ -463,7 +507,7 @@ void MainFrame::pinverifybutton(wxCommandEvent& evt) {
 void MainFrame::ATMPANEL() {
     //enterpinPanel->Hide();
     atmPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    atmPanel->SetBackgroundColour(*wxWHITE);
+    atmPanel->SetBackgroundColour(customColor);
 
     // Display Balance Button
     
@@ -497,7 +541,7 @@ void MainFrame::ATMPANEL() {
 
     // Exit and Save Button
     exitPanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 518), wxSize(504, 94));
-    exitPanel->SetBackgroundColour(*wxBLACK);
+    exitPanel->SetBackgroundColour(*wxRED);
     wxButton* exitButton = new wxButton(exitPanel, wxID_ANY, "Exit and Save", wxPoint(2, 2), wxSize(500, 90));
     exitButton->SetFont(buttonFont);
     exitButton->Bind(wxEVT_BUTTON, &MainFrame::OnExitATMClicked, this);
@@ -574,7 +618,6 @@ void MainFrame::OnDepositClicked(wxCommandEvent& evt) {
     atmPanel->Hide();
     depositPanel->Show();
 
-  
     depositamount = new wxTextCtrl(depositPanel, wxID_ANY, "INPUT AMOUNT TO DEPOSIT", wxPoint(378, 518), wxSize(500, 90));
     depositamount->SetFont(buttonFont);
     depositamount->SetValidator(wxTextValidator(wxFILTER_DIGITS));

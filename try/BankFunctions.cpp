@@ -250,7 +250,20 @@ void BankFunctions::retrievelocal() {
 }
 
 void BankFunctions::retrieveUSB() {
-	string filePath = "D:/BankAccountsIBM-USB.txt";
+	DWORD driveMask = GetLogicalDrives();
+	string filePath;
+
+	for (char driveLetter = 'A'; driveLetter <= 'Z'; ++driveLetter) {
+		if (driveMask & (1 << (driveLetter - 'A'))) {
+			string drivePath = string(1, driveLetter) + ":\\";
+			UINT driveType = GetDriveTypeA(drivePath.c_str());
+
+			if (driveType == DRIVE_REMOVABLE) {
+				filePath = drivePath + "BankAccountsIBM-USB.txt";
+				break;
+			}
+		}
+	}
 
 	ifstream myFile(filePath);
 	if (!myFile) {
@@ -302,7 +315,20 @@ user* BankFunctions::locateaddress(wxString num) {
 
 
 void BankFunctions::saveUSB() {
-	string filePath = "D:/BankAccountsIBM-USB.txt";
+	DWORD driveMask = GetLogicalDrives();
+	string filePath;
+
+	for (char driveLetter = 'A'; driveLetter <= 'Z'; ++driveLetter) {
+		if (driveMask & (1 << (driveLetter - 'A'))) {
+			string drivePath = string(1, driveLetter) + ":\\";
+			UINT driveType = GetDriveTypeA(drivePath.c_str());
+
+			if (driveType == DRIVE_REMOVABLE) {
+				filePath = drivePath + "BankAccountsIBM-USB.txt";
+				break;
+			}
+		}
+	}
 
 
 	ofstream myFile(filePath);
