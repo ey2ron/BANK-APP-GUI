@@ -255,7 +255,7 @@ void BankFunctions::retrieveUSB() {
 
 	for (char driveLetter = 'A'; driveLetter <= 'Z'; ++driveLetter) {
 		if (driveMask & (1 << (driveLetter - 'A'))) {
-			string drivePath = string(1, driveLetter) + ":\\";
+			string drivePath = string(1, driveLetter) + ":/";
 			UINT driveType = GetDriveTypeA(drivePath.c_str());
 
 			if (driveType == DRIVE_REMOVABLE) {

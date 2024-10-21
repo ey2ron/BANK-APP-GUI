@@ -115,12 +115,11 @@ void MainFrame::FirstPanel() {
     wxButton* IMbutton = new wxButton(IMbuttonPanel, wxID_ANY, "Interact with ATM Machine", wxPoint(2, 2), wxSize(500, 90));
     IMbutton->SetFont(buttonFont);
     
-    /*while (bank.usbempty()) {
-        IMbutton->Bind(wxEVT_BUTTON, [=](wxCommandEvent&) {
+    if (bank.usbempty()) {
             wxLogMessage("Create an account first.");
-            });
-    }*/
-   
+            IMbutton->Disable();
+    }
+  
     IMbutton->Bind(wxEVT_BUTTON, &MainFrame::OnButton2Clicked, this);
     
 
