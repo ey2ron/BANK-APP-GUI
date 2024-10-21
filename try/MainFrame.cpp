@@ -87,6 +87,7 @@ wxString bdaydate;
  wxFont ASCIIFont(14, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_BOLD);
  wxFont ASCIIFont1(10, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  wxFont ASCIIFont2(20, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+ wxFont DisplayFont(34, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
 
  //====================================================================================================================//
 
@@ -117,6 +118,8 @@ void MainFrame::FirstPanel() {
     IBbutton->SetFont(buttonFont);
     IBbutton->Bind(wxEVT_BUTTON, &MainFrame::OnButton1Clicked, this);
 
+    
+    
     // Interact with ATM Machine button 
     wxPanel* IMbuttonPanel = new wxPanel(panel, wxID_ANY, wxPoint(378, 418), wxSize(504, 94));
     IMbuttonPanel->SetBackgroundColour(*wxBLACK);
@@ -424,6 +427,7 @@ void MainFrame::OnRecoverPin(wxCommandEvent& evt) {
     recoverbdayyear = new wxTextCtrl(Recoverpanel, wxID_ANY, " Birthdate(YEAR) ", wxPoint(350, 310), wxSize(165, 30), wxTE_CENTER);
     recoverbdayyear->SetFont(inputfont);
     recoverbdayyear->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+    recoverbdayyear->SetMaxLength(4);
     recoverbdayyear->Bind(wxEVT_SET_FOCUS, [=](wxFocusEvent& event) {
         if (recoverbdayyear->GetValue() == " Birthdate(YEAR) ") {
             recoverbdayyear->Clear();
@@ -435,6 +439,8 @@ void MainFrame::OnRecoverPin(wxCommandEvent& evt) {
     recoverbdaymonth = new wxTextCtrl(Recoverpanel, wxID_ANY, " Birthdate(MONTH) ", wxPoint(545, 310), wxSize(165, 30), wxTE_CENTER);
     recoverbdaymonth->SetFont(inputfont);
     recoverbdaymonth->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+    recoverbdaymonth->SetMaxLength(2);
+    
     recoverbdaymonth->Bind(wxEVT_SET_FOCUS, [=](wxFocusEvent& event) {
         if (recoverbdaymonth->GetValue() == " Birthdate(MONTH) ") {
             recoverbdaymonth->Clear();
@@ -446,6 +452,7 @@ void MainFrame::OnRecoverPin(wxCommandEvent& evt) {
     recoverbdayday = new wxTextCtrl(Recoverpanel, wxID_ANY, " Birthdate(DAY) ", wxPoint(740, 310), wxSize(163, 30), wxTE_CENTER);
     recoverbdayday->SetFont(inputfont);
     recoverbdayday->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+    recoverbdayday->SetMaxLength(2);
     recoverbdayday->Bind(wxEVT_SET_FOCUS, [=](wxFocusEvent& event) {
         if (recoverbdayday->GetValue() == " Birthdate(DAY) ") {
             recoverbdayday->Clear();
@@ -694,16 +701,22 @@ void MainFrame::OnDisplayBalanceClicked(wxCommandEvent& evt) {
     atmPanel->Hide();
     balancePanel->Show();
 
-    DisplayAccnum = new wxStaticText(balancePanel, wxID_ANY, bank.returnaccnum(), wxPoint(378, 518), wxSize(500, 90));
-    DisplayAccnum->SetFont(ASCIIFont2);
+    wxStaticText* Accnum = new wxStaticText(balancePanel, wxID_ANY, " User Account Number: ", wxPoint(373, 218), wxSize(500, 90), wxTE_CENTER);
+    Accnum->SetFont(buttonFont);
+    DisplayAccnum = new wxStaticText(balancePanel, wxID_ANY, bank.returnaccnum(), wxPoint(373, 258), wxSize(500, 40),wxTE_CENTER);
+    DisplayAccnum->SetFont(DisplayFont);
+    
 
     double balance = bank.returnbalance();
     wxString convertbalance = wxString::Format("%.2lf", balance);
-    DisplayBalance = new wxStaticText(balancePanel, wxID_ANY,convertbalance, wxPoint(2, 2), wxSize(500, 90));
-    DisplayAccnum->SetFont(buttonFont);
+    
+    wxStaticText* balans = new wxStaticText(balancePanel, wxID_ANY, " User Remaining Balance: ", wxPoint(373, 318), wxSize(500, 40), wxTE_CENTER);
+    balans->SetFont(buttonFont);
+    DisplayBalance = new wxStaticText(balancePanel, wxID_ANY,convertbalance, wxPoint(373, 358), wxSize(500, 90),wxTE_CENTER);
+    DisplayBalance->SetFont(DisplayFont);
 
-    Exitdepobutton = new wxButton(balancePanel, wxID_ANY, "return", wxPoint(1100, 660), wxSize(165, 45));
-    Exitdepobutton->SetFont(buttonFont1);
+    Exitdepobutton = new wxButton(balancePanel, wxID_ANY, "return", wxPoint(373, 518), wxSize(500, 90));
+    Exitdepobutton->SetFont(buttonFont);
     Exitdepobutton->Bind(wxEVT_BUTTON, &MainFrame::onexitdisplay, this);
 
 
@@ -910,7 +923,7 @@ void MainFrame::OnExitATMClicked(wxCommandEvent& evt) {
 }
 
 void MainFrame::OnOkayButtonClicked(wxCommandEvent& evt) {
-    wxLogMessage("Data Saved. System is Closing");  
+    wxLogMessage("Data Saved. System is Closing.");  
     Close(true);
 }
 
