@@ -71,6 +71,12 @@ wxString bdaydate;
 
  wxPanel* exitPanel;
 
+ //mascot signuppanel
+ wxStaticText* mascotpanel1;
+ wxStaticText* mascotpanel2;
+ wxStaticText* mascotpanel3;
+ wxStaticText* mascotpanel4;
+ wxStaticText* mascotpanel5;
 
  wxFont inputfont(12, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
  wxFont inputfont2(20, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
@@ -80,6 +86,7 @@ wxString bdaydate;
  wxFont ThankyouFont(28, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
  wxFont ASCIIFont(14, wxFONTFAMILY_DECORATIVE, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_BOLD);
  wxFont ASCIIFont1(10, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+ wxFont ASCIIFont2(20, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
 
  //====================================================================================================================//
 
@@ -117,10 +124,9 @@ void MainFrame::FirstPanel() {
     IMbutton->SetFont(buttonFont);
     
     if (bank.usbempty()) {
-            IMbutton->Disable();
-            
+        IMbutton->Disable();
     }
-    
+   
   
     IMbutton->Bind(wxEVT_BUTTON, &MainFrame::OnButton2Clicked, this);
     
@@ -236,7 +242,7 @@ void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
         EnrollPanel->SetBackgroundColour(customColor);
         EnrollPanel->Show();
 
-        wxPanel* thebank2 = new wxPanel(EnrollPanel, wxID_ANY, wxPoint(320, 10), wxSize(900, 110));
+        wxPanel* thebank2 = new wxPanel(EnrollPanel, wxID_ANY, wxPoint(320, 10), wxSize(600, 110));
         wxStaticText* thebankk2 = new wxStaticText(thebank2, wxID_ANY,
             "  ______   _____   ______  ____  _____   _____  _____  _______   \n"
             ".' ____ \\ |_   _|.' ___  ||_   \\|_   _| |_   _||_   _||_   __ \\  \n"
@@ -247,17 +253,82 @@ void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
             wxPoint(10, 10));
         thebankk2->SetFont(ASCIIFont1);
 
+        wxPanel* ascii = new wxPanel(EnrollPanel, wxID_ANY, wxPoint(810,100), wxSize(900,700));
+        wxStaticText* ascii2 = new wxStaticText(ascii, wxID_ANY,
+            "                  :%*-                              \n"
+            "                .*+++*:                             \n"
+            "               .#+=@++%.                            \n"
+            "              =*+==@++++                            \n"
+            "             +++=+%@+++#:                           \n"
+            "            =*==*%*@+++++                           \n"
+            "           =*+#***#%++++#.                          \n"
+            "          .#+%%*+++++++++++#%:.                     \n"
+            "         :#++++++++++++++++++++#+.                  \n"
+            "       .%+++++++++++++++++++++++++%=#%**+++++++++   \n"
+            "      .*++++++++++++%+++++++++++++++++++++#%+++%.   \n"
+            "     .%++++*###*+++++++++++++++++++++*#%#%%#+#=.    \n"
+            "     +++**.    .=+++++++++++#@@++++++%*%#+=++-      \n"
+            "    .@+%.  +@@%: ++++++++++++++++++++#*===++%.      \n"
+            "    .#+=  #@@@@@::+++++++++++++++++++*+*#+*=        \n"
+            "   .+++%. #@@@@@.+++++++++*#*+#++++++#+=+#.         \n"
+            "  .*++++#. :**:.#+++++++#-....  %++++++#--@%%:.     \n"
+            "  -*#::-*+*###*++++++++*:@@@@@* .#+++++ :+   .=     \n"
+            "  =++#%#+++++++++**++++-#@@@@@@. %+++#. :=    =:    \n"
+            "  .+%++++++++++*++#+++++#-@@@@@% .#++*-  .-:    +   \n"
+            "**+*.#++++++++%##%+++++#=:=-..-*++#:     :--+*%.+   \n"
+            "%@+++.%++++++*      ++++++++++++++%.      .*+++%.   \n"
+            " -#+++.+%#++++#    +++++++**##+++*.        =+++*    \n"
+            "   -#+++.@%%*+%%++++++++++#=:-#%.         .%+++-    \n"
+            "    .-#++.#%#%%#*++++++++++++*%           .*++*:    \n"
+            "      *++-  =%#%##%@@@%@@@%@@#.          .%+++#.    \n"
+            "       *+%..#*##:***%%#*++++@#%          ++++%.     \n"
+            "      -+#: #*=  .*+=%%#*###*=.        .*+++*:      \n"
+            "       #+#:        ..*#-             -#+++*:       \n"
+            "       *+++*:      .*+++###+%      -#++++#.        \n"
+            "       .%+++++#%%#*+++++++++#   -%+++++**.         \n"
+            "         +#*****##%%%%#####%%#*++*+##**.           \n"
+            "          .%###%.   -%######*+++#%%@:              \n"
+            "            =%##%.     .=*####*+-.                 \n"
+            "             :%%%.                                  ",                                                                                 
+            wxPoint(10, 10));
+        ascii2->SetFont(ASCIIFont1);
+        ascii2->SetForegroundColour(wxColour(37, 72, 210));
+
+
+
         wxStaticText* SInputname = new wxStaticText(EnrollPanel, wxID_ANY, "Input Name:", wxPoint(40, 130), wxSize(450, 30));
         SInputname->SetFont(buttonFont); 
         Inputname = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 150), wxSize(500, 30));
         Inputname->SetFont(inputfont);
         Inputname->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
-
+        mascotpanel1 = new wxStaticText(EnrollPanel, wxID_ANY, "Hi New User!", wxPoint(650, 180), wxSize(200, 30));
+        mascotpanel1->SetFont(ASCIIFont2);
+        mascotpanel1->SetForegroundColour(wxColour(37, 72, 210));
+        mascotpanel1->Hide();
+        Inputname->Bind(wxEVT_ENTER_WINDOW, [=](wxMouseEvent&) {
+            mascotpanel2->Hide();
+            mascotpanel3->Hide();
+            mascotpanel1->Show();
+            mascotpanel5->Hide();
+            mascotpanel4->Hide();
+            });
+      
         wxStaticText* SCalendar = new wxStaticText(EnrollPanel, wxID_ANY, "Select your birth date:", wxPoint(40, 400), wxSize(450, 30));
         SCalendar->SetFont(buttonFont);
         calendar = new wxCalendarCtrl(EnrollPanel, wxID_ANY, wxDefaultDateTime, wxPoint(40, 415), wxSize(220, 170));
         calendar->SetFont(buttonFont);
         calendar->Bind(wxEVT_CALENDAR_SEL_CHANGED, &MainFrame::OnDateChanged, this);
+        mascotpanel3 = new wxStaticText(EnrollPanel, wxID_ANY, "Your birth date will\nbe needed for\nrecovering account.", wxPoint(575, 180), wxSize(190, 30));
+        mascotpanel3->SetFont(ASCIIFont2);
+        mascotpanel3->SetForegroundColour(wxColour(37, 72, 210));
+        mascotpanel3->Hide();
+        calendar->Bind(wxEVT_ENTER_WINDOW, [=](wxMouseEvent&) {
+            mascotpanel1->Hide();
+            mascotpanel4->Hide();
+            mascotpanel2->Hide();
+            mascotpanel5->Hide();
+            mascotpanel3->Show();
+            });
 
         wxStaticText* SInputpin = new wxStaticText(EnrollPanel, wxID_ANY, "Input Password (4 or 6 Digits)", wxPoint(40, 220), wxSize(450, 30));
         SInputpin->SetFont(buttonFont);
@@ -265,6 +336,17 @@ void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
         InputPin->SetFont(inputfont);
         InputPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
         InputPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
+        mascotpanel2 = new wxStaticText(EnrollPanel, wxID_ANY, "Please do not forget\nyour password ^^", wxPoint(575, 180), wxSize(190, 30));
+        mascotpanel2->SetFont(ASCIIFont2);
+        mascotpanel2->SetForegroundColour(wxColour(37, 72, 210));
+        mascotpanel2->Hide();
+        InputPin->Bind(wxEVT_ENTER_WINDOW, [=](wxMouseEvent&) {
+            mascotpanel1->Hide();
+            mascotpanel5->Hide();
+            mascotpanel3->Hide();
+            mascotpanel4->Hide();
+            mascotpanel2->Show();
+            });
 
         wxStaticText* SreenterPin = new wxStaticText(EnrollPanel, wxID_ANY, "Reenter Pin:", wxPoint(40, 310), wxSize(450, 30));
         SreenterPin->SetFont(buttonFont);
@@ -277,10 +359,32 @@ void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
         ConfirmButton->SetFont(buttonFont);
         ConfirmButton->SetForegroundColour(*wxGREEN);
         ConfirmButton->Bind(wxEVT_BUTTON, &MainFrame::onConfirmButtonClicked, this); ConfirmButton->Disable();
+        mascotpanel4 = new wxStaticText(EnrollPanel, wxID_ANY, "Thank you. Enjoy!", wxPoint(600, 180), wxSize(200, 30));
+        mascotpanel4->SetFont(ASCIIFont2);
+        mascotpanel4->SetForegroundColour(wxColour(37, 72, 210));
+        mascotpanel4->Hide();
+        ConfirmButton->Bind(wxEVT_ENTER_WINDOW, [=](wxMouseEvent&) {
+            mascotpanel2->Hide();
+            mascotpanel1->Hide();
+            mascotpanel3->Hide();
+            mascotpanel4->Show();
+            mascotpanel5->Hide();
+            });
 
-        ExitEnrollButton = new wxButton(EnrollPanel, wxID_ANY, "return to menu", wxPoint(1100, 660), wxSize(165, 45));
+        ExitEnrollButton = new wxButton(EnrollPanel, wxID_ANY, "return to menu", wxPoint(1100, 40), wxSize(165, 45));
         ExitEnrollButton->SetFont(buttonFont1);
         ExitEnrollButton->Bind(wxEVT_BUTTON, &MainFrame::ExitEnroll, this);
+        mascotpanel5 = new wxStaticText(EnrollPanel, wxID_ANY, "Are you sure you\nwant to exit?", wxPoint(600, 180), wxSize(200, 30));
+        mascotpanel5->SetFont(ASCIIFont2);
+        mascotpanel5->SetForegroundColour(wxColour(37, 72, 210));
+        mascotpanel5->Hide();
+        ExitEnrollButton->Bind(wxEVT_ENTER_WINDOW, [=](wxMouseEvent&) {
+            mascotpanel2->Hide();
+            mascotpanel1->Hide();
+            mascotpanel3->Hide();
+            mascotpanel4->Hide();
+            mascotpanel5->Show();
+            });
     }else{
         wxLogMessage("EXISTING ACCOUNT IN FLASHDRIVE FOUND, CANNOT ENROLL FOR NEW");
         return;
@@ -365,7 +469,7 @@ void MainFrame::OnRecoverPin(wxCommandEvent& evt) {
     reenternewpin->SetFont(inputfont2);
     reenternewpin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
     reenternewpin->Bind(wxEVT_SET_FOCUS, [=](wxFocusEvent& event) {
-        if (reenternewpin->GetValue() == " reenter pin") {
+        if (reenternewpin->GetValue() == " Reenter Pin") {
             reenternewpin->Clear();
         }
         event.Skip();
@@ -488,6 +592,17 @@ void MainFrame::OnButton2Clicked(wxCommandEvent& evt) {
    enterpinPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
    enterpinPanel->SetBackgroundColour(customColor);
 
+   wxStaticText* banner2 = new wxStaticText(enterpinPanel, wxID_ANY,
+       "      _     _________  ____    ____   ____    ____       _        ______  ____  ____  _____  ____  _____  ________  \n"
+       "     / \\   |  _   _  ||_   \\  /   _| |_   \\  /   _|     / \\     .' ___  ||_   ||   _||_   _||_   \\|_   _||_   __  | \n"
+       "    / _ \\  |_/ | | \\_|  |   \\/   |     |   \\/   |      / _ \\   / .'   \\_|  | |__| |    | |    |   \\ | |    | |_ \\_| \n"
+       "   / ___ \\     | |      | |\\  /| |     | |\\  /| |     / ___ \\  | |         |  __  |    | |    | |\\ \\| |    |  _| _  \n"
+       " _/ /   \\ \\_  _| |_    _| |_\\/_| |_   _| |_\\/_| |_  _/ /   \\ \\_\\ `.___.'\\ _| |  | |_  _| |_  _| |_\\   |_  _| |__/ | \n"
+       "|____| |____||_____|  |_____||_____| |_____||_____||____| |____|`.____ .'|____||____||_____||_____ \\____||________| \n"
+       , wxPoint(180, 2), wxSize(900, 150));
+
+   banner2->SetFont(ASCIIFont1);
+   
    wxStaticText* pinenterhere = new wxStaticText(enterpinPanel, wxID_ANY, " Enter Pin Here", wxPoint(360, 220), wxSize(500, 30));
    pinenterhere->SetFont(buttonFont);
 
@@ -517,25 +632,36 @@ void MainFrame::pinverifybutton(wxCommandEvent& evt) {
 }
 
 void MainFrame::ATMPANEL() {
-    //enterpinPanel->Hide();
     atmPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
     atmPanel->SetBackgroundColour(customColor);
 
+
+    wxStaticText* banner1 = new wxStaticText(atmPanel, wxID_ANY,
+        "      _     _________  ____    ____   ____    ____       _        ______  ____  ____  _____  ____  _____  ________  \n"
+        "     / \\   |  _   _  ||_   \\  /   _| |_   \\  /   _|     / \\     .' ___  ||_   ||   _||_   _||_   \\|_   _||_   __  | \n"
+        "    / _ \\  |_/ | | \\_|  |   \\/   |     |   \\/   |      / _ \\   / .'   \\_|  | |__| |    | |    |   \\ | |    | |_ \\_| \n"
+        "   / ___ \\     | |      | |\\  /| |     | |\\  /| |     / ___ \\  | |         |  __  |    | |    | |\\ \\| |    |  _| _  \n"
+        " _/ /   \\ \\_  _| |_    _| |_\\/_| |_   _| |_\\/_| |_  _/ /   \\ \\_\\ `.___.'\\ _| |  | |_  _| |_  _| |_\\   |_  _| |__/ | \n"
+        "|____| |____||_____|  |_____||_____| |_____||_____||____| |____|`.____ .'|____||____||_____||_____ \\____||________| \n"
+        , wxPoint(180, 2), wxSize(900, 150));
+
+    banner1->SetFont(ASCIIFont1);
+   
     // Display Balance Button
     
-    wxButton* balanceButton = new wxButton(atmPanel, wxID_ANY, "Display Balance", wxPoint(65, 180), wxSize(500, 90));
+    wxButton* balanceButton = new wxButton(atmPanel, wxID_ANY, "Display Balance", wxPoint(85, 180), wxSize(500, 90));
     balanceButton->SetFont(buttonFont);
     balanceButton->Bind(wxEVT_BUTTON, &MainFrame::OnDisplayBalanceClicked, this);
 
 
     // Withdraw Button
-    wxButton* withdrawButton = new wxButton(atmPanel, wxID_ANY, "Withdraw", wxPoint(65, 320), wxSize(500, 90));
+    wxButton* withdrawButton = new wxButton(atmPanel, wxID_ANY, "Withdraw", wxPoint(85, 320), wxSize(500, 90));
     withdrawButton->SetFont(buttonFont);
     withdrawButton->Bind(wxEVT_BUTTON, &MainFrame::OnWithdrawClicked, this);
 
     // Deposit Button
 
-    wxButton* depositButton = new wxButton(atmPanel, wxID_ANY, "Deposit", wxPoint(65, 460), wxSize(500, 90));
+    wxButton* depositButton = new wxButton(atmPanel, wxID_ANY, "Deposit", wxPoint(85, 460), wxSize(500, 90));
     depositButton->SetFont(buttonFont);
     depositButton->Bind(wxEVT_BUTTON, &MainFrame::OnDepositClicked, this);
 
@@ -564,20 +690,20 @@ void MainFrame::ATMPANEL() {
  
 void MainFrame::OnDisplayBalanceClicked(wxCommandEvent& evt) {
     balancePanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    balancePanel->SetBackgroundColour(*wxLIGHT_GREY);
+    balancePanel->SetBackgroundColour(customColor);
     atmPanel->Hide();
     balancePanel->Show();
 
     DisplayAccnum = new wxStaticText(balancePanel, wxID_ANY, bank.returnaccnum(), wxPoint(378, 518), wxSize(500, 90));
-    DisplayAccnum->SetFont(buttonFont);
+    DisplayAccnum->SetFont(ASCIIFont2);
 
     double balance = bank.returnbalance();
     wxString convertbalance = wxString::Format("%.2lf", balance);
     DisplayBalance = new wxStaticText(balancePanel, wxID_ANY,convertbalance, wxPoint(2, 2), wxSize(500, 90));
     DisplayAccnum->SetFont(buttonFont);
 
-    Exitdepobutton = new wxButton(balancePanel, wxID_ANY, "Exit Display", wxPoint(578, 518), wxSize(500, 90));
-    Exitdepobutton->SetFont(buttonFont);
+    Exitdepobutton = new wxButton(balancePanel, wxID_ANY, "return", wxPoint(1100, 660), wxSize(165, 45));
+    Exitdepobutton->SetFont(buttonFont1);
     Exitdepobutton->Bind(wxEVT_BUTTON, &MainFrame::onexitdisplay, this);
 
 
@@ -590,20 +716,23 @@ void MainFrame::onexitdisplay(wxCommandEvent& evt) {
 
 void MainFrame::OnWithdrawClicked(wxCommandEvent& evt) {
     withdrawPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    withdrawPanel->SetBackgroundColour(*wxBLACK);
+    withdrawPanel->SetBackgroundColour(customColor);
     atmPanel->Hide();
     withdrawPanel->Show();
 
-    withdrawamount = new wxTextCtrl(withdrawPanel, wxID_ANY, "INPUT AMOUNT TO WITHDRAW", wxPoint(378, 318), wxSize(500, 90));
-    withdrawamount->SetFont(buttonFont);
+    wxStaticText* withdrawLabel = new wxStaticText(withdrawPanel, wxID_ANY, "Enter Withdrawal Amount:", wxPoint(378, 270), wxSize(500, 30));
+    withdrawLabel->SetFont(buttonFont);
+
+    withdrawamount = new wxTextCtrl(withdrawPanel, wxID_ANY, "", wxPoint(378, 318), wxSize(500, 90), wxTE_CENTER);
+    withdrawamount->SetFont(ASCIIFont2);
     withdrawamount->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
-    withdrawbutton = new wxButton(withdrawPanel, wxID_ANY, "PROCEED", wxPoint(378, 518), wxSize(500, 90));
+    withdrawbutton = new wxButton(withdrawPanel, wxID_ANY, "Proceed", wxPoint(378, 418), wxSize(500, 90));
     withdrawbutton->SetFont(buttonFont);
     withdrawbutton->Bind(wxEVT_BUTTON, &MainFrame::onwithdrawbuttonclicked, this);
 
-    exitwithdraw = new wxButton(withdrawPanel, wxID_ANY, "Exit Withdrawal", wxPoint(578, 418), wxSize(500, 90));
-    exitwithdraw->SetFont(buttonFont);
+    exitwithdraw = new wxButton(withdrawPanel, wxID_ANY, "return", wxPoint(1100, 660), wxSize(165, 45));
+    exitwithdraw->SetFont(buttonFont1);
     exitwithdraw->Bind(wxEVT_BUTTON, &MainFrame::onexitwithdraw, this);
 }
 
@@ -626,17 +755,29 @@ void MainFrame::onexitwithdraw(wxCommandEvent& evt) {
 
 void MainFrame::OnDepositClicked(wxCommandEvent& evt) {
     depositPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    depositPanel->SetBackgroundColour(*wxLIGHT_GREY);
+    depositPanel->SetBackgroundColour(customColor);
     atmPanel->Hide();
     depositPanel->Show();
 
-    depositamount = new wxTextCtrl(depositPanel, wxID_ANY, "INPUT AMOUNT TO DEPOSIT", wxPoint(378, 518), wxSize(500, 90));
-    depositamount->SetFont(buttonFont);
+    wxStaticText* depositLabel = new wxStaticText(depositPanel, wxID_ANY, "Enter Deposit Amount:", wxPoint(378, 270), wxSize(500, 30));
+    depositLabel->SetFont(buttonFont);
+
+    depositamount = new wxTextCtrl(depositPanel, wxID_ANY, "", wxPoint(378, 318), wxSize(500, 90), wxTE_CENTER);
+    depositamount->SetFont(ASCIIFont2);
     depositamount->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
     depositbutton = new wxButton(depositPanel, wxID_ANY, "DEPOSIT", wxPoint(378, 418), wxSize(500, 90));
     depositbutton->SetFont(buttonFont);
     depositbutton->Bind(wxEVT_BUTTON, &MainFrame::ondepositamount,this);
+
+    wxButton* depositbuttonback1 = new wxButton(depositPanel, wxID_ANY, "return", wxPoint(1100, 660), wxSize(165, 45));
+    depositbuttonback1->SetFont(buttonFont1);
+    depositbuttonback1->Bind(wxEVT_BUTTON, &MainFrame::onexitdeposit,this);
+}
+
+void MainFrame::onexitdeposit(wxCommandEvent& evt) {
+    depositPanel->Hide();
+    atmPanel->Show();
 }
 
 void MainFrame::ondepositamount(wxCommandEvent& evt) {
@@ -651,23 +792,30 @@ void MainFrame::ondepositamount(wxCommandEvent& evt) {
 
 void MainFrame::OnTransferClicked(wxCommandEvent& evt) {
     transferPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    transferPanel->SetBackgroundColour(*wxBLACK);
+    transferPanel->SetBackgroundColour(customColor);
     atmPanel->Hide();
-    Targetrecipient = new wxTextCtrl(transferPanel, wxID_ANY, "Input recipient account number", wxPoint(378, 218), wxSize(500, 90));
-    Targetrecipient->SetFont(buttonFont);
+
+    wxStaticText* recipientLabel = new wxStaticText(transferPanel, wxID_ANY, "Enter Recipient Account Number:", wxPoint(378, 180), wxSize(500, 30));
+    recipientLabel->SetFont(buttonFont);
+
+    Targetrecipient = new wxTextCtrl(transferPanel, wxID_ANY, "", wxPoint(378, 220), wxSize(500, 90), wxTE_CENTER);
+    Targetrecipient->SetFont(ASCIIFont2);
     Targetrecipient->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
-    TransferAmount = new wxTextCtrl(transferPanel, wxID_ANY, "Input transfer amount", wxPoint(378, 318), wxSize(500, 90));
-    TransferAmount->SetFont(buttonFont);
+    wxStaticText* amountLabel = new wxStaticText(transferPanel, wxID_ANY, "Enter Transfer Amount:", wxPoint(378, 320), wxSize(500, 30));
+    amountLabel->SetFont(buttonFont);
+
+    TransferAmount = new wxTextCtrl(transferPanel, wxID_ANY, "", wxPoint(378, 360), wxSize(500, 90), wxTE_CENTER);
+    TransferAmount->SetFont(ASCIIFont2);
     TransferAmount->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
-    ConfirmTransfer = new wxButton(transferPanel, wxID_ANY, "Confirm Transfer", wxPoint(378, 418), wxSize(500, 90));
+    ConfirmTransfer = new wxButton(transferPanel, wxID_ANY, "Confirm Transfer", wxPoint(378, 460), wxSize(500, 90));
     ConfirmTransfer->SetFont(buttonFont);
     ConfirmTransfer->Bind(wxEVT_BUTTON, &MainFrame::onconfirmtransfer, this);
 
 
-    exittransfer = new wxButton(transferPanel, wxID_ANY, "Back to ATM MACHINE", wxPoint(378, 518), wxSize(500, 90));
-    exittransfer->SetFont(buttonFont);
+    exittransfer = new wxButton(transferPanel, wxID_ANY, "return", wxPoint(1100, 660), wxSize(165, 45));
+    exittransfer->SetFont(buttonFont1);
     exittransfer->Bind(wxEVT_BUTTON, &MainFrame::onexittransfer, this);
 
 }
@@ -692,32 +840,36 @@ void MainFrame::onexittransfer(wxCommandEvent& evt) {
 
 void MainFrame::OnChangePinClicked(wxCommandEvent& evt) {
     pinPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    pinPanel->SetBackgroundColour(*wxLIGHT_GREY);
+    pinPanel->SetBackgroundColour(customColor);
     atmPanel->Hide();
 
-    CurrentPin = new wxTextCtrl(pinPanel, wxID_ANY, "Input Current Pin", wxPoint(378, 218), wxSize(500, 90),wxTE_PASSWORD);
-    CurrentPin->SetFont(buttonFont);
+    wxStaticText* currentPinLabel = new wxStaticText(pinPanel, wxID_ANY, "Enter Current Pin:", wxPoint(378, 180), wxSize(500, 30));
+    currentPinLabel->SetFont(buttonFont);
+
+    CurrentPin = new wxTextCtrl(pinPanel, wxID_ANY, "", wxPoint(378, 210), wxSize(500, 90), wxTE_CENTER| wxTE_PASSWORD);
+    CurrentPin->SetFont(ASCIIFont2);
     CurrentPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
+    wxStaticText* newPinLabel = new wxStaticText(pinPanel, wxID_ANY, "Enter New Pin:", wxPoint(378, 310), wxSize(500, 30));
+    newPinLabel->SetFont(buttonFont);
 
-    NewPin = new wxTextCtrl(pinPanel, wxID_ANY, "Input New Pin", wxPoint(378, 318), wxSize(500, 90));
-    NewPin->SetFont(buttonFont);
+    NewPin = new wxTextCtrl(pinPanel, wxID_ANY, "", wxPoint(378, 340), wxSize(500, 90), wxTE_CENTER| wxTE_PASSWORD);
+    NewPin->SetFont(ASCIIFont2);
     NewPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
+    wxStaticText* confirmNewPinLabel = new wxStaticText(pinPanel, wxID_ANY, "Confirm New Pin:", wxPoint(378, 440), wxSize(500, 30));
+    confirmNewPinLabel->SetFont(buttonFont);
 
-    ConfirmNewPin = new wxTextCtrl(pinPanel, wxID_ANY, "Confirm New Pin", wxPoint(378, 418), wxSize(500, 90),wxTE_PASSWORD);
-    ConfirmNewPin->SetFont(buttonFont);
+    ConfirmNewPin = new wxTextCtrl(pinPanel, wxID_ANY,"", wxPoint(378, 470), wxSize(500, 90), wxTE_CENTER|wxTE_PASSWORD);
+    ConfirmNewPin->SetFont(ASCIIFont2);
     ConfirmNewPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
-
-    ConfirmPinbutton = new wxButton(pinPanel, wxID_ANY, "Change Pin", wxPoint(378, 518), wxSize(500, 90));
+    ConfirmPinbutton = new wxButton(pinPanel, wxID_ANY, "Change Pin", wxPoint(378, 570), wxSize(500, 90));
     ConfirmPinbutton->SetFont(buttonFont);
     ConfirmPinbutton->Bind(wxEVT_BUTTON, &MainFrame::ConfirmPin, this);
 
-
-
-    ExitChangePin = new wxButton(pinPanel, wxID_ANY, "Back to ATM MACHINE", wxPoint(378, 618), wxSize(500, 90));
-    ExitChangePin->SetFont(buttonFont);
+    ExitChangePin = new wxButton(pinPanel, wxID_ANY, "Return", wxPoint(1100, 660), wxSize(165, 45));
+    ExitChangePin->SetFont(buttonFont1);
     ExitChangePin->Bind(wxEVT_BUTTON, &MainFrame::exitchangepin, this);
 }
 void MainFrame::ConfirmPin(wxCommandEvent& evt) {
@@ -748,17 +900,17 @@ void MainFrame::exitchangepin(wxCommandEvent& evt) {
 void MainFrame::OnExitATMClicked(wxCommandEvent& evt) {
     atmPanel->Hide();
     ThankyouPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    ThankyouPanel->SetBackgroundColour(*wxLIGHT_GREY); 
+    ThankyouPanel->SetBackgroundColour(customColor); 
     wxStaticText* thanks = new wxStaticText(ThankyouPanel, wxID_ANY, "Thank you for using the program, Have a Nice day!", wxPoint(100, 318), wxSize(350, 70));
     thanks->SetFont(ThankyouFont);
-    wxButton* OkayButton = new wxButton(ThankyouPanel, wxID_ANY, "Continue", wxPoint(578, 518), wxSize(220, 50));
+    wxButton* OkayButton = new wxButton(ThankyouPanel, wxID_ANY, "Continue", wxPoint(525, 518), wxSize(220, 50));
     OkayButton->SetFont(buttonFont);
     OkayButton->Bind(wxEVT_BUTTON, &MainFrame::OnOkayButtonClicked, this);
 
 }
 
 void MainFrame::OnOkayButtonClicked(wxCommandEvent& evt) {
-    wxLogMessage("Data Saved. System is Closing");
+    wxLogMessage("Data Saved. System is Closing");  
     Close(true);
 }
 
