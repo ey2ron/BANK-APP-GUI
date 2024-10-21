@@ -22,6 +22,7 @@ wxString bdaydate;
  wxTextCtrl* Inputname;
  wxButton* Forgotpin;
  wxButton* ExitEnrollButton; 
+ wxButton* IMbutton;
  wxTextCtrl* pinenter;
  wxButton* pinverify;
  wxCalendarCtrl* calendar;
@@ -112,13 +113,14 @@ void MainFrame::FirstPanel() {
     // Interact with ATM Machine button 
     wxPanel* IMbuttonPanel = new wxPanel(panel, wxID_ANY, wxPoint(378, 418), wxSize(504, 94));
     IMbuttonPanel->SetBackgroundColour(*wxBLACK);
-    wxButton* IMbutton = new wxButton(IMbuttonPanel, wxID_ANY, "Interact with ATM Machine", wxPoint(2, 2), wxSize(500, 90));
+    IMbutton = new wxButton(IMbuttonPanel, wxID_ANY, "Interact with ATM Machine", wxPoint(2, 2), wxSize(500, 90));
     IMbutton->SetFont(buttonFont);
     
     if (bank.usbempty()) {
-            wxLogMessage("Create an account first.");
             IMbutton->Disable();
+            
     }
+    
   
     IMbutton->Bind(wxEVT_BUTTON, &MainFrame::OnButton2Clicked, this);
     
@@ -458,6 +460,7 @@ void MainFrame::OnDateChanged(wxCalendarEvent& evt) {
 //CONFIRMATION BUTTON
 void MainFrame::onConfirmButtonClicked(wxCommandEvent& evt) {
 	info temp;
+        IMbutton->Enable();
 	    wxString sname = temp.accname = Inputname->GetValue();
 		wxString spin = temp.accountpin = InputPin->GetValue();
         wxString sbday = temp.bday = bdaydate;
