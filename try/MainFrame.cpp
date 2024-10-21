@@ -83,7 +83,7 @@ wxString bdaydate;
  //====================================================================================================================//
 
  MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
-  
+     
      if (!bank.isFlashDriveInserted()) {
          wxLogError("No flash drive detected. Please insert a flash drive to continue.");
          Close(true);
@@ -114,7 +114,16 @@ void MainFrame::FirstPanel() {
     IMbuttonPanel->SetBackgroundColour(*wxBLACK);
     wxButton* IMbutton = new wxButton(IMbuttonPanel, wxID_ANY, "Interact with ATM Machine", wxPoint(2, 2), wxSize(500, 90));
     IMbutton->SetFont(buttonFont);
+    
+    /*while (bank.usbempty()) {
+        IMbutton->Bind(wxEVT_BUTTON, [=](wxCommandEvent&) {
+            wxLogMessage("Create an account first.");
+            });
+    }*/
+   
     IMbutton->Bind(wxEVT_BUTTON, &MainFrame::OnButton2Clicked, this);
+    
+
 
     // Exit Program button
     wxPanel* EbuttonPanel = new wxPanel(panel, wxID_ANY, wxPoint(378, 518), wxSize(504, 94));
@@ -251,14 +260,14 @@ void MainFrame::OnEnrollButtonClicked(wxCommandEvent& evt) {
 
         wxStaticText* SInputpin = new wxStaticText(EnrollPanel, wxID_ANY, "Input Password (4 or 6 Digits)", wxPoint(40, 220), wxSize(450, 30));
         SInputpin->SetFont(buttonFont);
-        InputPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 250), wxSize(500, 30));
+        InputPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 250), wxSize(500, 30), wxTE_PASSWORD);
         InputPin->SetFont(inputfont);
         InputPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
         InputPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
         wxStaticText* SreenterPin = new wxStaticText(EnrollPanel, wxID_ANY, "Reenter Pin:", wxPoint(40, 310), wxSize(450, 30));
         SreenterPin->SetFont(buttonFont);
-        reenterPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 340), wxSize(500, 30));
+        reenterPin = new wxTextCtrl(EnrollPanel, wxID_ANY, "", wxPoint(40, 340), wxSize(500, 30), wxTE_PASSWORD);
         reenterPin->SetFont(inputfont);
         reenterPin->Bind(wxEVT_TEXT, &MainFrame::OnInputChanged, this);
         reenterPin->SetValidator(wxTextValidator(wxFILTER_DIGITS));
@@ -473,20 +482,22 @@ void MainFrame::OnReturnButtonClicked(wxCommandEvent& evt) {
 //ATM MENU
 void MainFrame::OnButton2Clicked(wxCommandEvent& evt) {
     panel->Hide();
-    enterpinPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
-    enterpinPanel->SetBackgroundColour(customColor);
+    
+   
+   enterpinPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
+   enterpinPanel->SetBackgroundColour(customColor);
 
-    wxStaticText* pinenterhere = new wxStaticText(enterpinPanel, wxID_ANY, " Enter Pin Here", wxPoint(360, 220), wxSize(500, 30));
-    pinenterhere->SetFont(buttonFont);
+   wxStaticText* pinenterhere = new wxStaticText(enterpinPanel, wxID_ANY, " Enter Pin Here", wxPoint(360, 220), wxSize(500, 30));
+   pinenterhere->SetFont(buttonFont);
 
-    pinenter = new wxTextCtrl(enterpinPanel, wxID_ANY,"", wxPoint(360, 250), wxSize(500, 94), wxTE_PASSWORD | wxTE_CENTER);
-    pinenter->SetFont(inputfont3);
-    pinenter->SetValidator(wxTextValidator(wxFILTER_DIGITS));
-  
+   pinenter = new wxTextCtrl(enterpinPanel, wxID_ANY, "", wxPoint(360, 250), wxSize(500, 94), wxTE_PASSWORD | wxTE_CENTER);
+   pinenter->SetFont(inputfont3);
+   pinenter->SetValidator(wxTextValidator(wxFILTER_DIGITS));
 
-    pinverify = new wxButton(enterpinPanel, wxID_ANY, "Confirm Pin", wxPoint(410, 350), wxSize(400, 94));
-    pinverify->SetFont(buttonFont);
-    pinverify->Bind(wxEVT_BUTTON, &MainFrame::pinverifybutton, this);
+
+   pinverify = new wxButton(enterpinPanel, wxID_ANY, "Confirm Pin", wxPoint(410, 350), wxSize(400, 94));
+   pinverify->SetFont(buttonFont);
+   pinverify->Bind(wxEVT_BUTTON, &MainFrame::pinverifybutton, this);
    
 }
 
