@@ -485,7 +485,6 @@ void MainFrame::OnReturnButtonClicked(wxCommandEvent& evt) {
 void MainFrame::OnButton2Clicked(wxCommandEvent& evt) {
     panel->Hide();
     
-   
    enterpinPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
    enterpinPanel->SetBackgroundColour(customColor);
 
@@ -524,37 +523,37 @@ void MainFrame::ATMPANEL() {
 
     // Display Balance Button
     
-    wxButton* balanceButton = new wxButton(atmPanel, wxID_ANY, "Display Balance", wxPoint(378, 18), wxSize(500, 90));
+    wxButton* balanceButton = new wxButton(atmPanel, wxID_ANY, "Display Balance", wxPoint(65, 180), wxSize(500, 90));
     balanceButton->SetFont(buttonFont);
     balanceButton->Bind(wxEVT_BUTTON, &MainFrame::OnDisplayBalanceClicked, this);
 
 
     // Withdraw Button
-    wxButton* withdrawButton = new wxButton(atmPanel, wxID_ANY, "Withdraw", wxPoint(378, 118), wxSize(500, 90));
+    wxButton* withdrawButton = new wxButton(atmPanel, wxID_ANY, "Withdraw", wxPoint(65, 320), wxSize(500, 90));
     withdrawButton->SetFont(buttonFont);
     withdrawButton->Bind(wxEVT_BUTTON, &MainFrame::OnWithdrawClicked, this);
 
     // Deposit Button
 
-    wxButton* depositButton = new wxButton(atmPanel, wxID_ANY, "Deposit", wxPoint(378, 218), wxSize(500, 90));
+    wxButton* depositButton = new wxButton(atmPanel, wxID_ANY, "Deposit", wxPoint(65, 460), wxSize(500, 90));
     depositButton->SetFont(buttonFont);
     depositButton->Bind(wxEVT_BUTTON, &MainFrame::OnDepositClicked, this);
 
     // Fund Transfer Button
 
-    wxButton* transferButton = new wxButton(atmPanel, wxID_ANY, "Fund Transfer", wxPoint(378, 318), wxSize(500, 90));
+    wxButton* transferButton = new wxButton(atmPanel, wxID_ANY, "Fund Transfer", wxPoint(680, 180), wxSize(500, 90));
     transferButton->SetFont(buttonFont);
     transferButton->Bind(wxEVT_BUTTON, &MainFrame::OnTransferClicked, this);
 
     // Change PIN Button
     
-    wxButton* pinButton = new wxButton(atmPanel, wxID_ANY, "Change PIN", wxPoint(378, 418), wxSize(500, 90));
+    wxButton* pinButton = new wxButton(atmPanel, wxID_ANY, "Change PIN", wxPoint(680, 320), wxSize(500, 90));
     pinButton->SetFont(buttonFont);
     pinButton->Bind(wxEVT_BUTTON, &MainFrame::OnChangePinClicked, this);
 
     // Exit and Save Button
-    exitPanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(378, 518), wxSize(504, 94));
-    exitPanel->SetBackgroundColour(*wxRED);
+
+    exitPanel = new wxPanel(atmPanel, wxID_ANY, wxPoint(680, 460), wxSize(504, 94));
     wxButton* exitButton = new wxButton(exitPanel, wxID_ANY, "Exit and Save", wxPoint(2, 2), wxSize(500, 90));
     exitButton->SetFont(buttonFont);
     exitButton->Bind(wxEVT_BUTTON, &MainFrame::OnExitATMClicked, this);
