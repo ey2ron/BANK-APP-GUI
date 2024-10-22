@@ -5,7 +5,7 @@
 wxIMPLEMENT_APP(App);
 
 bool App::OnInit() {
-	MainFrame* mainFrame = new MainFrame("ATM NI ANO");
+	MainFrame* mainFrame = new MainFrame("INTERNATIONAL BANK OF MANIAGO");
 	mainFrame->SetMinClientSize (wxSize(1280, 720));
 	mainFrame->SetMaxClientSize (wxSize(1280, 720));
 	mainFrame->Move(130, 80);

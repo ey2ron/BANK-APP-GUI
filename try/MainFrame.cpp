@@ -701,22 +701,30 @@ void MainFrame::OnDisplayBalanceClicked(wxCommandEvent& evt) {
     atmPanel->Hide();
     balancePanel->Show();
 
-    wxStaticText* Accnum = new wxStaticText(balancePanel, wxID_ANY, " User Account Number: ", wxPoint(373, 218), wxSize(500, 90), wxTE_CENTER);
-    Accnum->SetFont(buttonFont);
-    DisplayAccnum = new wxStaticText(balancePanel, wxID_ANY, bank.returnaccnum(), wxPoint(373, 258), wxSize(500, 40),wxTE_CENTER);
-    DisplayAccnum->SetFont(DisplayFont);
+    wxStaticText* asciiArtt1 = new wxStaticText(balancePanel, wxID_ANY,
+        "   ___  ___   __   ___   _  ___________\n"
+        "  / _ )/ _ | / /  / _ | / |/ / ___/ __/\n"
+        " / _  / __ |/ /__/ __ |/    / /__/ _/  \n"
+        "/____/_/ |_/____/_/ |_/_/|_/\\___/___/  \n",
+        wxPoint(465, 40), wxSize(600, 150));
+
     
+    wxStaticText* Accnum = new wxStaticText(balancePanel, wxID_ANY, " User Account Number: ", wxPoint(373, 260), wxSize(500, 90), wxTE_CENTER);
+    Accnum->SetFont(buttonFont);
+    DisplayAccnum = new wxStaticText(balancePanel, wxID_ANY, bank.returnaccnum(), wxPoint(373, 300), wxSize(500, 40),wxTE_CENTER);
+    DisplayAccnum->SetFont(DisplayFont);
+    asciiArtt1->SetFont(ASCIIFont1); 
 
     double balance = bank.returnbalance();
     wxString convertbalance = wxString::Format("%.2lf", balance);
     
-    wxStaticText* balans = new wxStaticText(balancePanel, wxID_ANY, " User Remaining Balance: ", wxPoint(373, 318), wxSize(500, 40), wxTE_CENTER);
+    wxStaticText* balans = new wxStaticText(balancePanel, wxID_ANY, " User Remaining Balance: ", wxPoint(373, 360), wxSize(500, 40), wxTE_CENTER);
     balans->SetFont(buttonFont);
-    DisplayBalance = new wxStaticText(balancePanel, wxID_ANY,convertbalance, wxPoint(373, 358), wxSize(500, 90),wxTE_CENTER);
+    DisplayBalance = new wxStaticText(balancePanel, wxID_ANY,convertbalance, wxPoint(373, 400), wxSize(500, 40),wxTE_CENTER);
     DisplayBalance->SetFont(DisplayFont);
 
-    Exitdepobutton = new wxButton(balancePanel, wxID_ANY, "return", wxPoint(373, 518), wxSize(500, 90));
-    Exitdepobutton->SetFont(buttonFont);
+    Exitdepobutton = new wxButton(balancePanel, wxID_ANY, "return", wxPoint(1100, 660), wxSize(165, 45));
+    Exitdepobutton->SetFont(buttonFont1);
     Exitdepobutton->Bind(wxEVT_BUTTON, &MainFrame::onexitdisplay, this);
 
 
@@ -732,6 +740,14 @@ void MainFrame::OnWithdrawClicked(wxCommandEvent& evt) {
     withdrawPanel->SetBackgroundColour(customColor);
     atmPanel->Hide();
     withdrawPanel->Show();
+
+    wxStaticText* withdrawAsciiArt = new wxStaticText(withdrawPanel, wxID_ANY,
+        "  _      ______________ _____  ___  ___ _      __\n"
+        " | | /| / /  _/_  __/ // / _ \\/ _ \\/ _ | | /| / /\n"
+        " | |/ |/ // /  / / / _  / // / , _/ __ | |/ |/ / \n"
+        " |__/|__/___/ /_/ /_//_/____/_/|_/_/ |_|__/|__/  \n",
+        wxPoint(405, 40), wxSize(600, 150));
+    withdrawAsciiArt->SetFont(ASCIIFont1); 
 
     wxStaticText* withdrawLabel = new wxStaticText(withdrawPanel, wxID_ANY, "Enter Withdrawal Amount:", wxPoint(378, 270), wxSize(500, 30));
     withdrawLabel->SetFont(buttonFont);
@@ -772,6 +788,14 @@ void MainFrame::OnDepositClicked(wxCommandEvent& evt) {
     atmPanel->Hide();
     depositPanel->Show();
 
+    wxStaticText* depositAsciiArt = new wxStaticText(depositPanel, wxID_ANY,
+        "   ___  _______  ____  ______________\n"
+        "  / _ \\/ __/ _ \\/ __ \\/ __/  _/_  __/\n"
+        " / // / _// ___/ /_/ /\\ \\_/ /  / /   \n"
+        "/____/___/_/   \\____/___/___/ /_/    \n",
+        wxPoint(465, 40), wxSize(400, 150));
+    depositAsciiArt->SetFont(ASCIIFont1);
+
     wxStaticText* depositLabel = new wxStaticText(depositPanel, wxID_ANY, "Enter Deposit Amount:", wxPoint(378, 270), wxSize(500, 30));
     depositLabel->SetFont(buttonFont);
 
@@ -807,6 +831,16 @@ void MainFrame::OnTransferClicked(wxCommandEvent& evt) {
     transferPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
     transferPanel->SetBackgroundColour(customColor);
     atmPanel->Hide();
+
+    // Create a wxStaticText to display the updated deposit ASCII art
+    wxStaticText* TRANSFERtAsciiArt = new wxStaticText(transferPanel, wxID_ANY,
+        "   ___  ___   _  ____ __  _________  ___   _  _________________ \n"
+        "  / _ )/ _ | / |/ / //_/ /_  __/ _ \\/ _ | / |/ / __/ __/ __/ _ \\ \n"
+        " / _  / __ |/    / ,<     / / / , _/ __ |/    /\\ \\/ _// _// , _/ \n"
+        "/____/_/ |_/_/|_/_/|_|   /_/ /_/|_/_/ |_/_/|_/___/_/ /___/_/|_|  \n",
+        wxPoint(375, 40), wxSize(850, 90)); 
+    TRANSFERtAsciiArt->SetFont(ASCIIFont1);
+
 
     wxStaticText* recipientLabel = new wxStaticText(transferPanel, wxID_ANY, "Enter Recipient Account Number:", wxPoint(378, 180), wxSize(500, 30));
     recipientLabel->SetFont(buttonFont);
@@ -855,6 +889,16 @@ void MainFrame::OnChangePinClicked(wxCommandEvent& evt) {
     pinPanel = new wxPanel(this, wxID_ANY, wxPoint(2, 2), wxSize(1280, 720));
     pinPanel->SetBackgroundColour(customColor);
     atmPanel->Hide();
+
+    // Create a wxStaticText to display the new ASCII art
+    wxStaticText* pinAsciiArt = new wxStaticText(pinPanel, wxID_ANY,
+        "   ___  __________________  ___  _____  __  \n"
+        "  / _ \\/ __/ __/ __/_  __/ / _ \\/  _/ |/ /  \n"
+        " / , _/ _/_\\ \\/ _/  / /   / ___// //    /   \n"
+        "/_/|_/___/___/___/ /_/   /_/  /___/_/|_/    \n",
+        wxPoint(425, 40), wxSize(750, 90));
+    pinAsciiArt->SetFont(ASCIIFont1); 
+
 
     wxStaticText* currentPinLabel = new wxStaticText(pinPanel, wxID_ANY, "Enter Current Pin:", wxPoint(378, 180), wxSize(500, 30));
     currentPinLabel->SetFont(buttonFont);
