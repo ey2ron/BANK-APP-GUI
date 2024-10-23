@@ -11,4 +11,4 @@ A project to be submitted on CC212/211L or Data Structures and Algorithms to Pro
 
 # Console App Version
 
-<a href=" https://github.com/SPlinterRed/DSA_Project-Bank/tree/main" target="_blank"> DSA-Project-Bank - CLI APP </a>  <br>
+<a href="https://github.com/SPlinterRed/DSA_Project-Bank/tree/main" target="_blank"> DSA-Project-Bank - CLI APP </a>  <br>
