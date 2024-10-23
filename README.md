@@ -1,6 +1,6 @@
 # DSA_Project-Bank
 A GUI for IBM - International Bank of Maniago
-Created with the help of WXWidgets and compatible only with Visual Studio.
+Created using WXWidgets and compatible only with Visual Studio.
 
 **Group Members:**
 Arceleta, Axel Aaron
